@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+
+  {%- include head.html -%}
+
+  <body class="flex flex-col min-h-screen">
+
+    <nav class="flex justify-between items-center p-3 bg-white shadow" role="navigation" aria-label="main navigation">
+      <a class="font-mono text-2xl font-bold text-purple-600" href="/">#! /nirebu</a>
+      <a class="px-3 py-1 rounded bg-purple-600 hover:bg-purple-700 text-white font-semibold" href="/blog/">Blog</a>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-12 lg:px-0 flex-grow lg:container" aria-label="Content">
+      {{ content }}
+    </main>
+
+    {%- include footer.html -%}
+
+  </body>
+
+</html>
