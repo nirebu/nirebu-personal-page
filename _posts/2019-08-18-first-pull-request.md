@@ -2,7 +2,7 @@
 layout: post
 title: How I started contributing to opensource by opening my first pull request
 description: The reasoning and the process behind one of my first contributions to opensource packages
-categories: opensource vue
+tags: opensource vue
 date: 2019-08-18
 ---
 

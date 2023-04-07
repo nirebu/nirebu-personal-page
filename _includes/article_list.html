@@ -1,0 +1,24 @@
+<section>
+  <h3 class="font-bold text-3xl lg:text-4xl text-gray-800 px-3">
+    Latest posts
+  </h3>
+  {%- for post in site.posts -%}
+    <li class="py-2 px-3 rounded-lg hover:bg-gray-200 hover:shadow-inner">
+      <h3>
+        <a class="text-xl text-purple-600" href="{{ post.url | relative_url }}">
+          {{ post.title | escape }}
+        </a>
+      </h3>
+      <p class="mt-1 text-sm text-gray-700">
+        {%- if post.description -%}
+          {{ post.description }}
+        {%- endif -%}
+      </p>
+      <p class="mt-1 text-sm text-gray-600">
+        Published on {{ post.date | date: "%b %-d, %Y" }}
+      </p>
+    </li>
+  {%- endfor -%}
+</section>
+
+<p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | relative_url }}">via RSS</a></p>

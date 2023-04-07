@@ -3,7 +3,7 @@ layout: post
 title: How to route Postfix outgoing email based on recipients' MX records
 description: Learn how to route Postfix MTA outgoing email on different transports, based on the recipient domain MX record
 date:   2020-02-20 19:51:18 +0200
-categories: postfix linux email sysadmin
+tags: postfix linux email sysadmin
 ---
 
 [Postfix](http://www.postfix.org/BASIC_CONFIGURATION_README.html) documentation and examples can be everything between daunting and obscure. So here's a roundup of the process that led me to achieve what I thought it was possible because I *knew* Postfix could do that, I'd only have had to find the correct way.
