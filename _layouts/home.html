@@ -7,7 +7,13 @@ layout: default
     <h1 class="page-heading">{{ page.title }}</h1>
   {%- endif -%}
 
-  {{ content }}
+  <div>
+    {{ content }}
+  </div>
 
-  {%- include article_list.html -%}
+  <div class="mt-4">
+    {%- include article_list.html limit="2" -%}
+
+    <a class="mt-2" href="/blog/" class="text-purple-600 hover:text-purple-700">Read all articles</a>
+  </div>
 </div>

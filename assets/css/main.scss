@@ -5,8 +5,12 @@
 @tailwind components;
 @tailwind utilities;
 
+a {
+  @apply text-purple-600 font-bold underline;
+}
+
 .markdown {
-  @apply text-gray-800 leading-normal mb-4;
+  @apply text-gray-800 leading-relaxed mb-4 ;
   & > * + *, & li > p + p {
     @apply mt-6;
   }
@@ -20,7 +24,7 @@
     @apply text-black font-bold;
   }
   & a {
-    @apply text-black font-semibold;
+    @apply font-semibold;
   }
   & strong a {
     @apply font-bold;
@@ -32,7 +36,7 @@
     @apply leading-tight text-lg font-bold text-black mt-8 -mb-2;
   }
   & code {
-    @apply font-mono text-sm inline bg-gray-200 py-1 px-2 rounded;
+    @apply font-mono text-sm inline bg-gray-200 py-0.5 px-2 rounded;
   }
   & pre code {
     @apply block bg-gray-100 p-4 rounded my-4;
