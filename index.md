@@ -15,6 +15,8 @@ I'm currently working fully remote as a **Senior Software Engineer** and **Team 
 
 In my spare time I like to grow my Cyber Security skills by participating in Bug Bounty programs.
 
+I also run a **YouTube channel** (in Italian 🇮🇹) where I talk about **Cyber Security**, **Coding** (specifically Ruby), and **Artificial Intelligence**. My goal is to share what I learn and make technical concepts accessible. [Check out the channel]({{ site.youtube_url }}).
+
 Past experiences include (recent to less recent):
 
 - Consultancy work as a **DevOps Engineer** kicking off a Kubernetes environment and CI/CD pipeline for a Payment Processor. Tech stack was Java, Maven, Jenkins, SonarQube, Kubernetes, Docker and Oracle Cloud.

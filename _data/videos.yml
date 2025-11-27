@@ -1,0 +1,65 @@
+- title: "La Dottrina di Rails: La filosofia che plasma il framework"
+  category: "Codice e Carriera"
+  episode: 11
+  description: "Entriamo nella cucina di un ristorante stellato per capire la 'dottrina' di Ruby on Rails."
+  youtube_id: "1RlzTGEVa1M"
+
+- title: "Perchè tutti dovremmo imparare Markdown (e come cominciare)"
+  category: "Produttività e strumenti"
+  episode: 10
+  description: "Un'introduzione al linguaggio di markup leggero che sta cambiando il modo in cui scriviamo e documentiamo."
+  youtube_id: "rZvIYXUOLiE"
+
+- title: "Corso Ruby - Lezione 6: Crittografia con AES"
+  category: "Codice e Carriera"
+  episode: 9
+  description: "Conclusione del corso di Ruby con un esempio pratico di crittografia."
+  youtube_id: "NDNdRgjshtA"
+
+- title: "Corso Ruby - Lezione 5: File e JSON"
+  category: "Codice e Carriera"
+  episode: 8
+  description: "Impariamo a leggere e scrivere file e a manipolare dati JSON in Ruby."
+  youtube_id: "4Eb7z8rna_U"
+
+- title: "Corso Ruby - Lezione 4: Condizionali con if e while"
+  category: "Codice e Carriera"
+  episode: 7
+  description: "Gestione del flusso di controllo: prendere decisioni e ripetere azioni."
+  youtube_id: "d_udEa6R5IA"
+
+- title: "Corso Ruby - Lezione 3: Metodi e cicli base"
+  category: "Codice e Carriera"
+  episode: 6
+  description: "Organizzare il codice con metodi e introduzione ai cicli."
+  youtube_id: "U76Ac0dOhhU"
+
+- title: "Corso Ruby - Lezione 2: Array e Hash"
+  category: "Codice e Carriera"
+  episode: 5
+  description: "Strutture dati fondamentali: collezioni ordinate e dizionari chiave-valore."
+  youtube_id: "lY8yp8__bv0"
+
+- title: "Corso Ruby - Lezione 1: Variabili, input e output"
+  category: "Codice e Carriera"
+  episode: 4
+  description: "I primi passi con Ruby: gestire dati e interagire con l'utente."
+  youtube_id: "sowRVD05YaE"
+
+- title: "Sono un bug vivente (o lo è il mio nome)"
+  category: "Radar Digitale"
+  episode: 3
+  description: "Le vicissitudini di avere un nome accentato nel mondo digitale."
+  youtube_id: "lAc7opF_7Tk"
+
+- title: "Come craccano le password non sicure"
+  category: "Radar Digitale"
+  episode: 2
+  description: "Dimostrazione pratica della debolezza delle password tramite attacco a forza bruta e dizionario."
+  youtube_id: "6dGt_KGOLqk"
+
+- title: "Come rubano i dati delle carte di pagamento (e come difendersi)"
+  category: "Radar Digitale"
+  episode: 1
+  description: "Cos'è un attacco di carding e come proteggersi."
+  youtube_id: "nMbqBuLiYDI"
