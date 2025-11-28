@@ -2,8 +2,12 @@
 layout: default
 ---
 
-<div class="home">
-  {{ content }}
+<div class="home font-mono">
+  <div class="markdown">
+    {{ content }}
+  </div>
 
-  {%- include article_list.html -%}
+  <div class="mt-8">
+    {%- include article_list.html -%}
+  </div>
 </div>

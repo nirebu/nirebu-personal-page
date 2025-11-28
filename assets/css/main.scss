@@ -5,17 +5,30 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Dotted grid background */
+body {
+  background-color: white;
+  background-image: radial-gradient(circle, #e5e5e5 1px, transparent 1px);
+  background-size: 20px 20px;
+  @apply font-mono;
+}
+
 a {
-  @apply text-indigo-600 font-bold underline;
+  @apply text-black font-mono underline decoration-indigo-600 underline-offset-2;
+  text-decoration-thickness: 2px;
+}
+
+a:hover {
+  @apply text-indigo-600;
 }
 
 .markdown {
-  @apply text-gray-800 leading-relaxed mb-4 ;
+  @apply text-black leading-relaxed mb-4 font-mono;
   & > * + *, & li > p + p {
     @apply mt-6;
   }
   & p + p {
-    @apply mt-2;
+    @apply mt-4;
   }
   & li + li {
     @apply mt-2;
@@ -24,27 +37,57 @@ a {
     @apply text-black font-bold;
   }
   & a {
-    @apply font-semibold;
+    @apply font-mono;
   }
   & strong a {
     @apply font-bold;
   }
+  & h1 {
+    @apply leading-tight text-3xl font-bold text-black mb-4 mt-8 font-mono;
+    border-bottom: 2px solid #4f46e5;
+    padding-bottom: 8px;
+  }
   & h2 {
-    @apply leading-tight text-xl font-bold text-black mb-2 mt-8;
+    @apply leading-tight text-xl font-bold text-black mb-3 mt-8 font-mono;
+    &:before {
+      content: "## ";
+      @apply text-indigo-600;
+    }
   }
   & h3 {
-    @apply leading-tight text-lg font-bold text-black mt-8 -mb-2;
+    @apply leading-tight text-lg font-bold text-black mt-6 mb-2 font-mono;
+    &:before {
+      content: "### ";
+      @apply text-indigo-600;
+    }
   }
   & code {
-    @apply font-mono text-sm inline bg-gray-200 py-0.5 px-2 rounded;
+    @apply font-mono text-sm inline bg-black text-white py-1 px-2;
+    border-radius: 3px;
+  }
+  & pre {
+    @apply bg-black p-4 my-4 overflow-x-auto;
+    border-radius: 3px;
+    border-left: 4px solid #4f46e5;
   }
   & pre code {
-    @apply block bg-gray-100 p-4 rounded my-4;
+    @apply block bg-transparent text-white p-0;
   }
   & blockquote {
-    @apply border-l-4 border-gray-500 bg-gray-100 p-3 pl-4 my-4 italic;
+    @apply border-l-4 border-indigo-600 bg-gray-50 p-4 my-4 font-mono;
+    &:before {
+      content: "> ";
+      @apply text-indigo-600 font-bold;
+    }
   }
   & ul, & ol {
-    @apply pl-5 my-2 list-disc sm:pl-10;
+    @apply pl-8 my-4 font-mono;
+  }
+  & ul {
+    list-style: none;
+    & li:before {
+      content: "• ";
+      @apply text-indigo-600 font-bold mr-2;
+    }
   }
 }

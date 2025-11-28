@@ -1,22 +1,30 @@
-<section>
-  <h3 class="font-bold text-3xl lg:text-4xl text-gray-800">
-    Latest posts
-  </h3>
+<section class="font-mono">
+  <h2 class="font-mono font-bold text-2xl text-black mb-6">
+    <span class="text-indigo-600">## </span>latest_posts
+  </h2>
   {%- for post in site.posts limit:include.limit -%}
-    <li class="py-2 rounded-lg list-none">
-      <h3>
-        <a class="text-xl text-indigo-600" href="{{ post.url | relative_url }}">
-          {{ post.title | escape }}
-        </a>
-      </h3>
-      <p class="mt-1 text-sm text-gray-700">
-        {%- if post.description -%}
-          {{ post.description }}
-        {%- endif -%}
-      </p>
-      <p class="mt-1 text-sm text-gray-600">
-        Published on {{ post.date | date: "%b %-d, %Y" }}
-      </p>
-    </li>
+  <article class="py-4 border-b border-gray-200 list-none last:border-b-0">
+    <h3 class="mb-2">
+      <a
+        class="
+          text-lg font-bold text-black hover:text-indigo-600
+          transition-colors font-mono
+        "
+        href="{{ post.url | relative_url }}"
+      >
+        <span class="text-indigo-600">[</span>{{ post.title | escape
+        }}<span class="text-indigo-600">]</span>
+      </a>
+    </h3>
+
+    <p class="mt-2 text-sm text-black font-mono">
+      {%- if post.description -%} {{ post.description }} {%- endif -%}
+    </p>
+
+    <p class="mt-2 text-xs text-black font-mono">
+      <span class="text-indigo-600 font-bold">$</span> published {{ post.date |
+      date: "%b %-d, %Y" }}
+    </p>
+  </article>
   {%- endfor -%}
 </section>
