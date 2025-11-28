@@ -1,18 +1,19 @@
 <!DOCTYPE html>
-<html lang="{{ page.lang | default: site.lang | default: "en" }}">
 
+<html lang="{{ page.lang | default: site.lang | default: 'en' }}">
   {%- include head.html -%}
-
-  <body class="flex flex-col min-h-screen">
-
+  <body class="flex flex-col min-h-screen font-mono">
     {%- include navbar.html -%}
-
-    <main class="container max-w-4xl mx-auto px-12 py-8 lg:px-0 flex-grow" aria-label="Content">
+    <main
+      class="
+        container max-w-4xl mx-auto px-12 py-12 lg:px-8 flex-grow bg-white
+        border-t border-gray-200
+      "
+      aria-label="Content"
+      style="box-shadow: 1px 0 0 0 rgba(0,0,0,0.1), -1px 0 0 0 rgba(0,0,0,0.1), 0 1px 0 0 rgba(0,0,0,0.1);"
+    >
       {{ content }}
     </main>
-
     {%- include footer.html -%}
-
   </body>
-
 </html>
