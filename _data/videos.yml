@@ -1,3 +1,9 @@
+- title: "Ep 1 Tutorial Rails | Setup, Scaffold e Console"
+  category: "Codice e Carriera"
+  episode: 13
+  description: "Costruiremo da zero un tracker per i nostri abbonamenti. In questo primo episodio prepariamo il terreno, generiamo la prima struttura CRUD."
+  youtube_id: "6FIohP6VGGQ"
+
 - title: "Liberiamo gli agenti AI dall'interfaccia web"
   category: "Laboratorio AI"
   episode: 12
