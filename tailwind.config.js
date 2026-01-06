@@ -8,8 +8,13 @@ module.exports = {
     './*.html',
   ],
   theme: {
-    theme: {
-      extend: {},
+    extend: {
+      colors: {
+        purple: {
+          400: '#c084fc',
+          600: '#9333ea',
+        }
+      }
     },
   },
   plugins: []
