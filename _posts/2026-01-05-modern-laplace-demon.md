@@ -10,6 +10,8 @@ Of course, this post is about AI.
 
 During a recent 1:1 at work, I discussed the possibility of LLMs acting as a modern implementation of **Laplace’s Demon**: a tool capable of navigating complex decisions by simply knowing *everything*.
 
+![Laplace's Demon](/assets/images/laplace-demon.jpg){: style="max-width: 75%; display: block; margin-left: auto; margin-right: auto;"}
+
 For context, here is the formal definition given by Pierre Simon Laplace:
 
 > We may regard the present state of the universe as the effect of its past and the cause of its future. An intellect which at a certain moment would know all forces that set nature in motion, and all positions of all items of which nature is composed, if this intellect were also vast enough to submit these data to analysis, it would embrace in a single formula the movements of the greatest bodies of the universe and those of the tiniest atom; for such an intellect nothing would be uncertain and the future just like the past could be present before its eyes.
