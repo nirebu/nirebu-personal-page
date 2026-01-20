@@ -1,3 +1,15 @@
+- title: "Ep 4 Tutorial Rails | Callback: magia o trappola?"
+  category: "Codice e Carriera"
+  episode: 16
+  description: "Non rimaniamo intrappolati nella ragnatela delle callback."
+  youtube_id: "ZyKcRh6n78A"
+
+- title: "Ep 3 Tutorial Rails | Enum: quando e come"
+  category: "Codice e Carriera"
+  episode: 15
+  description: "Valutiamo se tutta la magia di rails ci serve."
+  youtube_id: "SDi6wIi7hLQ"
+
 - title: "Ep 2 Tutorial Rails | Validazioni dei modelli"
   category: "Codice e Carriera"
   episode: 14
