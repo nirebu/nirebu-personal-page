@@ -6,8 +6,6 @@ date: 2026-01-29 08:42:31 +0200
 tags: ai philosophy labor
 ---
 
-# The Wave Is Coming
-
 I recently read the [AI at work is anti-labor by design](https://henry.codes/writing/ai-at-work-is-anti-labor-by-design/) article. The author argues that AI adoption is fundamentally about eliminating workers, not empowering them. That bosses push LLMs because they're cheaper than your coworker's salary (so they can keep their lifestyles), not because they'll make your work better.
 
 The human cost is undeniable. We've seen Amazon lay off 14,000 people and Pinterest cut 15% of its staff. These aren't just numbers on a balance sheet: they represent mortgages, families, and careers upended. And the correlation between "AI adoption" announcements and these painful reductions is hard to ignore.

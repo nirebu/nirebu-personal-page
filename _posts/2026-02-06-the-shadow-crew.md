@@ -6,8 +6,6 @@ date: 2026-02-06 10:11:31 +0200
 tags: ai career management agents
 ---
 
-# The Shadow Crew: Promoting Yourself to Manager of Silicon
-
 For the last few years, we've called AI a "copilot." A helpful assistant sitting in the passenger seat while *we* drove. Looking at the latest news, with OpenAI launching [Frontier](https://openai.com/index/introducing-openai-frontier/) and "digital employees" becoming a corporate line item, the dynamic shifted once again.
 
 The industry has moved beyond selling us a better spellchecker; they are now marketing a "digital workforce" that can be hired, onboarded, and performance-reviewed.
