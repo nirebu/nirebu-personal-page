@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parking Simulator — learn trajectories</title>
+<style>
+  :root { --bg:#111418; --panel:#1b2129; --line:#2b3440; --txt:#e8eef4; --dim:#9aa7b4; --green:#2ecc71; --red:#ff3b30; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--txt); font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif; display:flex; flex-direction:column; height:100vh; overflow:hidden; }
+  header { display:flex; gap:12px; align-items:center; padding:10px 14px; background:var(--panel); border-bottom:1px solid var(--line); flex-wrap:wrap; }
+  header h1 { font-size:16px; margin:0; font-weight:700; letter-spacing:.3px; }
+  header .sub { color:var(--dim); font-size:13px; }
+  header .spacer { flex:1; }
+  button { background:#2a3340; color:var(--txt); border:1px solid #3a4655; border-radius:8px; padding:8px 14px; cursor:pointer; font-size:14px; }
+  button:hover { background:#354052; }
+  button.primary { background:var(--green); border-color:var(--green); color:#062b16; font-weight:700; }
+  #wrap { display:flex; flex:1; min-height:0; }
+  #canvasHolder { flex:1; position:relative; min-width:0; }
+  canvas { width:100%; height:100%; display:block; background:#22262b; }
+  aside { width:290px; background:var(--panel); border-left:1px solid var(--line); padding:14px; overflow-y:auto; font-size:14px; }
+  aside h2 { font-size:13px; text-transform:uppercase; letter-spacing:.8px; color:var(--dim); margin:14px 0 6px; }
+  aside h2:first-child { margin-top:0; }
+  .row { display:flex; justify-content:space-between; margin:4px 0; }
+  .mono { font-variant-numeric:tabular-nums; font-family:ui-monospace,Menlo,Consolas,monospace; }
+  #steerBarOuter { background:#0e1216; border:1px solid var(--line); border-radius:6px; height:22px; position:relative; overflow:hidden; }
+  #steerBarCenter { position:absolute; left:50%; top:0; bottom:0; width:2px; background:#54606f; }
+  #steerBar { position:absolute; top:3px; bottom:3px; background:#4da3ff; border-radius:4px; }
+  #steerWheel { font-size:34px; display:inline-block; transition:transform .05s linear; }
+  kbd { background:#0e1216; border:1px solid #3a4655; border-bottom-width:2px; border-radius:5px; padding:1px 6px; font-size:12px; font-family:ui-monospace,monospace; }
+  .hint { color:var(--dim); font-size:13px; line-height:1.5; }
+  #msg { font-weight:700; min-height:22px; margin-top:6px; }
+  #msg.win { color:var(--green); }
+  #msg.hit { color:var(--red); }
+  .lights { display:flex; gap:8px; align-items:center; margin-top:6px; }
+  .lamp { width:14px; height:14px; border-radius:50%; background:#333; border:1px solid #555; }
+  .lamp.on-red { background:var(--red); box-shadow:0 0 8px var(--red); }
+  .lamp.on-white { background:#fff; box-shadow:0 0 8px #fff; }
+  #touch { display:none; gap:8px; padding:10px; background:var(--panel); border-top:1px solid var(--line); }
+  #touch button { flex:1; font-size:20px; padding:12px; touch-action:none; user-select:none; }
+  @media (max-width:900px){ aside{ display:none; } #touch{ display:flex; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>🅿️ Parking Simulator</h1>
+  <span class="sub">Top-down trainer · learn how cars curve</span>
+  <span class="spacer"></span>
+  <span class="sub mono" id="statLine">—</span>
+  <button id="resetBtn" class="primary">↻ New lot (R)</button>
+</header>
+
+<div id="wrap">
+  <div id="canvasHolder"><canvas id="c"></canvas></div>
+  <aside>
+    <h2>Car state</h2>
+    <div class="row"><span>Speed</span><span class="mono" id="speed">0 km/h</span></div>
+    <div class="row"><span>Gear</span><span class="mono" id="gear">D</span></div>
+    <div class="row"><span>Front wheels</span><span class="mono" id="steerTxt">0°</span></div>
+    <div id="steerBarOuter"><div id="steerBarCenter"></div><div id="steerBar"></div></div>
+    <div class="row" style="margin-top:8px"><span>Steering wheel</span><span id="steerWheel">⬆️</span></div>
+    <div class="lights">
+      <span class="lamp" id="brakeLamp" title="brake"></span><span class="hint">brake</span>
+      <span class="lamp" id="revLamp" title="reverse"></span><span class="hint">reverse</span>
+    </div>
+    <div class="row"><span>Hits</span><span class="mono" id="hits">0</span></div>
+    <div class="row"><span>Time</span><span class="mono" id="time">0.0s</span></div>
+    <div id="msg"></div>
+
+    <h2>Controls</h2>
+    <div class="hint">
+      <div><kbd>▲</kbd> gas &nbsp; <kbd>▼</kbd> brake, then reverse</div>
+      <div><kbd>◀</kbd><kbd>▶</kbd> turn wheels — <b>they STAY</b>, they don't spring back!</div>
+      <div><kbd>C</kbd> or <kbd>0</kbd> straighten wheels &nbsp; <kbd>R</kbd> new lot</div>
+      <div><kbd>T</kbd> trail &nbsp; <kbd>G</kbd> predicted path</div>
+      <p>To straighten out you must steer the <i>opposite</i> way — just like a real car. Watch the blue front wheels and the dotted predicted curve.</p>
+      <p>Park fully inside the flashing <b style="color:var(--green)">green bay</b>, straight (±12°), almost stopped. Hold ~1.5s. Each new lot picks a random bay type: <b>90°</b>, <b>45° angled</b>, or <b>∥ parallel (S)</b> — the green label tells you which.</p>
+    </div>
+
+    <h2>Lesson: why it curves</h2>
+    <div class="hint">A car pivots around its <b>rear axle</b>. Front wheels angled = car drives on a circle. More lock = tighter circle. In reverse the rear swings wide — that's why you turn <i>late</i> going in nose-first, and <i>early</i> backing in. Try full lock at crawling speed and watch the dotted arc.</div>
+  </aside>
+</div>
+
+<div id="touch">
+  <button data-k="left">◀</button>
+  <button data-k="up">▲</button>
+  <button data-k="down">▼</button>
+  <button data-k="right">▶</button>
+</div>
+
+<script>
+(() => {
+"use strict";
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+
+// ---------- World ----------
+// Taller lot so 90° + 45° + parallel ("S") zones all fit with room to manoeuvre.
+const W = 1200, H = 1150;           // world units (px in world space)
+let scale = 1, ox = 0, oy = 0;
+function resize() {
+  const r = canvas.parentElement.getBoundingClientRect();
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  canvas.width = Math.max(2, r.width * dpr);
+  canvas.height = Math.max(2, r.height * dpr);
+  scale = Math.min(canvas.width / W, canvas.height / H);
+  ox = (canvas.width - W * scale) / 2;
+  oy = (canvas.height - H * scale) / 2;
+}
+window.addEventListener('resize', resize);
+
+// ---------- Input (sticky steering!) ----------
+const keys = { up:false, down:false, left:false, right:false };
+let showTrail = true, showGuide = true;
+addEventListener('keydown', e => {
+  if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key)) e.preventDefault();
+  if (e.key === 'ArrowUp') keys.up = true;
+  if (e.key === 'ArrowDown') keys.down = true;
+  if (e.key === 'ArrowLeft') keys.left = true;
+  if (e.key === 'ArrowRight') keys.right = true;
+  if (e.key === 'r' || e.key === 'R') reset();
+  if (e.key === 'c' || e.key === 'C' || e.key === '0') car.steer = 0;
+  if (e.key === 't' || e.key === 'T') showTrail = !showTrail;
+  if (e.key === 'g' || e.key === 'G') showGuide = !showGuide;
+});
+addEventListener('keyup', e => {
+  if (e.key === 'ArrowUp') keys.up = false;
+  if (e.key === 'ArrowDown') keys.down = false;
+  if (e.key === 'ArrowLeft') keys.left = false;
+  if (e.key === 'ArrowRight') keys.right = false;
+});
+// NOTE: keyup for left/right does NOT touch car.steer — that is the whole point.
+document.querySelectorAll('#touch button').forEach(b => {
+  const k = b.dataset.k;
+  const on = e => { e.preventDefault(); keys[k] = true; };
+  const off = e => { e.preventDefault(); keys[k] = false; };
+  b.addEventListener('pointerdown', on);
+  b.addEventListener('pointerup', off);
+  b.addEventListener('pointercancel', off);
+  b.addEventListener('pointerleave', off);
+});
+
+// ---------- Car ----------
+const CAR_L = 84, CAR_W = 40;               // world px
+const WHEELBASE = CAR_L * 0.62;
+const MAX_STEER = 0.62;                      // ~35.5°
+const STEER_SPEED = 1.25;                    // rad/s of steering-rack travel (was 1.9 — too twitchy)
+const MAX_FWD = 210, MAX_REV = -105;
+const ACCEL = 170, REV_ACCEL = 130, BRAKE = 340;
+
+const car = { x:0, y:0, a:-Math.PI/2, v:0, steer:0, braking:false, reversing:false };
+let trail = [];      // past center positions for trajectory learning
+let parked = [];     // {x,y,a,color}
+let spots = [];      // {x,y,a,w,l,occupied,target,kind: '90°'|'45°'|'∥'}
+let walls = [];      // {x,y,w,h}
+let entrance = { x: W/2, w: 150 };
+let target = null;
+let hits = 0, startT = 0, elapsed = 0, holdT = 0, won = false, crashFlash = 0, lastTs = 0;
+
+const PALETTE = ['#c0392b','#2980b9','#8e44ad','#16a085','#d35400','#7f8c8d','#2c3e50','#b7950b','#5d6d7e'];
+
+function rnd(a,b){ return a + Math.random()*(b-a); }
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+function reset() {
+  parked = []; spots = []; walls = []; trail = [];
+  hits = 0; won = false; holdT = 0; crashFlash = 0;
+  startT = performance.now(); elapsed = 0;
+  car.steer = 0; car.v = 0; car.a = -Math.PI/2;
+
+  // random entrance FIRST (old code built walls with the previous value)
+  entrance.x = rnd(W*0.3, W*0.7);
+
+  // outer walls with entrance gap at bottom
+  const T = 24, ex0 = entrance.x - entrance.w/2, ex1 = entrance.x + entrance.w/2;
+  walls.push({x:0,y:0,w:W,h:T});
+  walls.push({x:0,y:0,w:T,h:H});
+  walls.push({x:W-T,y:0,w:T,h:H});
+  walls.push({x:0,y:H-T,w:ex0,h:T});
+  walls.push({x:ex1,y:H-T,w:W-ex1,h:T});
+
+  car.x = entrance.x; car.y = H - 110;
+
+  // --- random parking blocks: 90° + 45° angled + parallel ("S") ---
+  const addSpot = (x, y, a, w, l, kind) => {
+    const s = { x, y, a, w, l, occupied:false, target:false, kind };
+    spots.push(s);
+    return s;
+  };
+
+  // ZONE A — top: 45° angled row (one-way aisle, tilt flips per reset)
+  const aW = rnd(58, 66), aL = rnd(92, 102);
+  const tilt = (Math.random() < 0.5 ? 1 : -1) * Math.PI/4; // ±45°
+  const aY = rnd(120, 170);
+  const nA = 5 + Math.floor(Math.random()*3);              // 5-7
+  const pitchA = aW * Math.SQRT2;                          // row pitch for 45° bays
+  const cxA = rnd(W*0.42, W*0.58);
+  const x0A = cxA - (nA-1)*pitchA/2;
+  for (let i=0;i<nA;i++){
+    addSpot(x0A + i*pitchA, aY, Math.PI/2 + tilt, aW, aL, '45°');
+  }
+
+  // ZONE B — middle: classic 90° double island
+  const spotL = rnd(88, 100), spotW = rnd(52, 62);
+  const midY = rnd(500, 580);
+  const n2 = 6 + Math.floor(Math.random()*3);              // 6-8 per side
+  const midCx = rnd(W*0.42, W*0.58);
+  const x0B = midCx - (n2*spotW)/2;
+  for (let i=0;i<n2;i++){
+    const sx = x0B + i*spotW + spotW/2;
+    addSpot(sx, midY - spotL/2, -Math.PI/2, spotW, spotL, '90°');
+    addSpot(sx, midY + spotL/2,  Math.PI/2, spotW, spotL, '90°');
+  }
+
+  // ZONE C — lower left/right: parallel ("S") bays along vertical curbs
+  // Bay: long side along the street. l ≈ car length + margin, w ≈ car width + margin.
+  const pL = rnd(112, 124), pW = rnd(46, 52);
+  const parTop = midY + spotL/2 + rnd(120, 160);
+  const parN = Math.max(2, Math.floor((H - 220 - parTop) / (pL + 14)));
+  let doLeft = Math.random() < 0.85, doRight = Math.random() < 0.85;
+  if (!doLeft && !doRight) doLeft = true; // always keep at least one parallel curb
+  if (doLeft || !doRight) {
+    const px = rnd(90, 130);
+    for (let i=0;i<parN;i++)
+      addSpot(px, parTop + i*(pL+14) + pL/2, Math.PI/2, pW, pL, '∥');
+  }
+  if (doRight || !doLeft) {
+    const px = W - rnd(90, 130);
+    for (let i=0;i<parN;i++)
+      addSpot(px, parTop + i*(pL+14) + pL/2, Math.PI/2, pW, pL, '∥');
+  }
+
+  // some concrete pillars / planters as tight-corner obstacles (kept clear of bays)
+  const aisleT = aY + aL;
+  const nPillars = 2 + Math.floor(Math.random()*3);
+  for (let i=0;i<nPillars;i++){
+    walls.push({x:rnd(150,W-180), y:rnd(aisleT+50, midY-spotL-90), w:28, h:28});
+  }
+
+  // occupy random spots, keep at least 2 free; pick target among free
+  const free = [];
+  const occupyP = rnd(0.35, 0.6);
+  // keep target away from directly-in-front-of-entrance sometimes for challenge
+  for (const s of spots) {
+    if (Math.random() < occupyP) {
+      s.occupied = true;
+      parked.push({ x:s.x + rnd(-3,3), y:s.y + rnd(-4,4), a:s.a + rnd(-0.03,0.03), color:pick(PALETTE) });
+    } else free.push(s);
+  }
+  if (free.length < 2) { // force some free
+    for (let i=0;i<3;i++){ const s = pick(spots); s.occupied = false; }
+    parked = parked.slice(0, Math.max(0, spots.length - 3));
+    free.length = 0;
+    for (const s of spots) if (!s.occupied) free.push(s);
+  }
+  // rebuild parked exactly from occupied flags (cleaner)
+  parked = spots.filter(s=>s.occupied).map(s=>({x:s.x+rnd(-3,3), y:s.y+rnd(-4,4), a:s.a+rnd(-0.03,0.03), color:pick(PALETTE)}));
+  target = pick(free);
+  target.target = true;
+
+  setMsg('');
+}
+document.getElementById('resetBtn').onclick = reset;
+
+// ---------- Physics (kinematic bicycle) ----------
+function step(dt) {
+  // steering: incremental, persists on release
+  if (keys.left)  car.steer -= STEER_SPEED * dt;
+  if (keys.right) car.steer += STEER_SPEED * dt;
+  car.steer = Math.max(-MAX_STEER, Math.min(MAX_STEER, car.steer));
+
+  car.braking = false; car.reversing = false;
+  let acc = 0;
+  if (keys.up) acc += ACCEL;
+  if (keys.down) {
+    if (car.v > 8) { acc -= BRAKE; car.braking = true; }
+    else { acc -= REV_ACCEL; car.reversing = true; }   // brake → then reverse
+  }
+  if (car.reversing) car.braking = false;
+  if (car.v < -4) car.reversing = true;  // rolling backwards → white light
+
+  // drag + rolling resistance
+  acc -= car.v * 0.9 + Math.sign(car.v) * 6;
+
+  car.v += acc * dt;
+  car.v = Math.max(MAX_REV, Math.min(MAX_FWD, car.v));
+  if (!keys.up && !keys.down && Math.abs(car.v) < 4) car.v = 0;
+
+  // bicycle yaw: pivot about rear axle feel via wheelbase
+  if (Math.abs(car.v) > 0.5) {
+    car.a += (car.v / WHEELBASE) * Math.tan(car.steer) * dt;
+  }
+  const px = car.x, py = car.y;
+  car.x += Math.cos(car.a) * car.v * dt;
+  car.y += Math.sin(car.a) * car.v * dt;
+
+  // collisions: walls + parked cars
+  if (collides(car.x, car.y, car.a)) {
+    car.x = px; car.y = py;
+    if (Math.abs(car.v) > 60) { hits++; crashFlash = 0.5; setMsg('💥 Hit! Line up earlier and go slower.', 'hit'); }
+    car.v *= -0.15; // small bounce
+  } else if (crashFlash <= 0 && !won && msgIsHit) {
+    setMsg('');
+  }
+
+  // trail
+  if (showTrail) {
+    const last = trail[trail.length-1];
+    if (!last || Math.hypot(car.x-last.x, car.y-last.y) > 6) {
+      trail.push({x:car.x, y:car.y});
+      if (trail.length > 600) trail.shift();
+    }
+  }
+
+  // win check: inside target, aligned, slow (works for 90° / 45° / parallel)
+  if (target && !won) {
+    const dx = car.x - target.x, dy = car.y - target.y;
+    // target frame: allow either nose-in direction (a or a+PI)
+    let d = normAng(car.a - target.a);
+    d = Math.min(Math.abs(d), Math.abs(normAng(d - Math.PI)));
+    // project offset onto bay axes so angled/parallel bays test correctly
+    const ux = Math.cos(target.a), uy = Math.sin(target.a);   // along bay
+    const vx = -uy, vy = ux;                                   // across bay
+    const along = Math.abs(dx*ux + dy*uy), across = Math.abs(dx*vx + dy*vy);
+    const inside = across < target.w*0.30 && along < target.l*0.34;
+    if (inside && d < 12*Math.PI/180 && Math.abs(car.v) < 14) {
+      holdT += dt;
+      setMsg(`Hold it… ${(1.5-holdT).toFixed(1)}s — wheels: ${(car.steer*180/Math.PI).toFixed(0)}°`, 'win');
+      if (holdT > 1.5) { won = true; setMsg(`✅ Parked! Time ${elapsed.toFixed(1)}s · Hits ${hits} · press R for a new lot`, 'win'); }
+    } else holdT = 0;
+  }
+  elapsed = (performance.now() - startT) / 1000;
+  if (crashFlash > 0) crashFlash -= dt;
+}
+
+function normAng(a){ while(a>Math.PI)a-=2*Math.PI; while(a<-Math.PI)a+=2*Math.PI; return a; }
+
+// OBB collision via SAT: player rect vs every wall (AABB) + parked car (OBB)
+function rectCorners(x,y,a,l,w){
+  const c=Math.cos(a), s=Math.sin(a), hl=l/2, hw=w/2;
+  return [
+    {x:x+c*hl-s*hw, y:y+s*hl+c*hw},
+    {x:x+c*hl+s*hw, y:y+s*hl-c*hw},
+    {x:x-c*hl+s*hw, y:y-s*hl-c*hw},
+    {x:x-c*hl-s*hw, y:y-s*hl+c*hw},
+  ];
+}
+function satOverlap(p1, p2){
+  for (let k=0;k<2;k++){
+    const p = k? p2 : p1;
+    for (let i=0;i<2;i++){
+      const ax = p[(i+1)%4].x - p[i].x, ay = p[(i+1)%4].y - p[i].y;
+      const nx = -ay, ny = ax;
+      let m1=1e9,M1=-1e9,m2=1e9,M2=-1e9;
+      for (const q of p1){ const d=q.x*nx+q.y*ny; m1=Math.min(m1,d); M1=Math.max(M1,d); }
+      for (const q of p2){ const d=q.x*nx+q.y*ny; m2=Math.min(m2,d); M2=Math.max(M2,d); }
+      if (M1 < m2 || M2 < m1) return false;
+    }
+  }
+  return true;
+}
+function collides(x,y,a){
+  if (x < 30 || x > W-30 || y < 30 || y > H-14) return true;
+  const me = rectCorners(x,y,a,CAR_L,CAR_W);
+  for (const wl of walls){
+    const w2 = rectCorners(wl.x+wl.w/2, wl.y+wl.h/2, 0, wl.w, wl.h);
+    if (satOverlap(me, w2)) return true;
+  }
+  for (const p of parked){
+    if (Math.hypot(p.x-x, p.y-y) > 160) continue;
+    if (satOverlap(me, rectCorners(p.x,p.y,p.a,CAR_L,CAR_W))) return true;
+  }
+  return false;
+}
+
+// ---------- Rendering ----------
+function drawCar(x, y, a, steer, opts={}) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate(a);
+  const L = CAR_L, Wd = CAR_W;
+  // shadow
+  ctx.fillStyle = 'rgba(0,0,0,.35)';
+  roundRect(-L/2+3, -Wd/2+3, L, Wd, 9); ctx.fill();
+  // body
+  ctx.fillStyle = opts.color || '#e74c3c';
+  roundRect(-L/2, -Wd/2, L, Wd, 9); ctx.fill();
+  ctx.strokeStyle = opts.crashed ? '#ff3b30' : 'rgba(0,0,0,.5)'; ctx.lineWidth = 2;
+  roundRect(-L/2, -Wd/2, L, Wd, 9); ctx.stroke();
+  // windshield + rear window + roof
+  ctx.fillStyle = '#9fc5d8';
+  ctx.fillRect(L*0.12, -Wd/2+5, L*0.2, Wd-10);
+  ctx.fillStyle = '#2d3a46';
+  ctx.fillRect(-L/2+6, -Wd/2+6, 10, Wd-12);
+  ctx.fillStyle = 'rgba(255,255,255,.15)';
+  ctx.fillRect(-L*0.18, -Wd/2+5, L*0.28, Wd-10);
+
+  // wheels: rear fixed, front rotated by steer.
+  // Only the PLAYER gets the blue "these steer!" highlight — parked cars stay plain.
+  const hl = !opts.plain;
+  drawWheel(-L*0.32, -Wd/2, 0, false, false);
+  drawWheel(-L*0.32,  Wd/2, 0, false, false);
+  drawWheel( L*0.32, -Wd/2, steer, true, hl);
+  drawWheel( L*0.32,  Wd/2, steer, true, hl);
+
+  // brake lights (red) at rear
+  const brakeOn = opts.brake, revOn = opts.reverse;
+  ctx.fillStyle = brakeOn ? '#ff3b30' : '#5a1512';
+  if (brakeOn) { ctx.shadowColor = '#ff3b30'; ctx.shadowBlur = 14; }
+  ctx.fillRect(-L/2-2, -Wd/2+2, 5, 10);
+  ctx.fillRect(-L/2-2,  Wd/2-12, 5, 10);
+  ctx.shadowBlur = 0;
+  // reverse lights (white) at rear
+  ctx.fillStyle = revOn ? '#ffffff' : '#5c665f';
+  if (revOn) { ctx.shadowColor = '#fff'; ctx.shadowBlur = 12; }
+  ctx.fillRect(-L/2-2, -8, 5, 6);
+  ctx.fillRect(-L/2-2, 2, 5, 6);
+  ctx.shadowBlur = 0;
+  // headlights
+  ctx.fillStyle = '#ffe9a3';
+  ctx.fillRect(L/2-2, -Wd/2+2, 4, 8);
+  ctx.fillRect(L/2-2,  Wd/2-10, 4, 8);
+  ctx.restore();
+
+  // steering direction whiskers (world space, from front wheels)
+  if (opts.guide !== false) {
+    const fx = x + Math.cos(a)*CAR_L*0.32, fy = y + Math.sin(a)*CAR_L*0.32;
+    const wa = a + steer;
+    ctx.save();
+    ctx.strokeStyle = '#4da3ff'; ctx.lineWidth = 3; ctx.setLineDash([]);
+    for (const s of [-1,1]) {
+      const wx = fx - Math.sin(a)*s*CAR_W/2, wy = fy + Math.cos(a)*s*CAR_W/2;
+      ctx.beginPath(); ctx.moveTo(wx, wy);
+      ctx.lineTo(wx + Math.cos(wa)*46, wy + Math.sin(wa)*46); ctx.stroke();
+    }
+    ctx.restore();
+  }
+}
+function drawWheel(lx, ly, ang, front, highlight) {
+  ctx.save(); ctx.translate(lx, ly); ctx.rotate(ang);
+  ctx.fillStyle = '#0c0d0f';
+  const ww = 20, wh = front ? 11 : 10;
+  roundRect(-ww/2, -wh/2, ww, wh, 3); ctx.fill();
+  if (front && highlight) { // blue rim = "these steer!" (player only)
+    ctx.strokeStyle = '#4da3ff'; ctx.lineWidth = 2.5;
+    roundRect(-ww/2, -wh/2, ww, wh, 3); ctx.stroke();
+    ctx.strokeStyle = '#4da3ff'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(2, -wh/2); ctx.lineTo(2, wh/2); ctx.stroke();
+  }
+  ctx.restore();
+}
+function roundRect(x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath();
+}
+
+function draw(ts) {
+  const dt = Math.min(0.033, (ts - lastTs)/1000 || 0.016);
+  lastTs = ts;
+  if (!won) step(dt); else { elapsed = (performance.now()-startT)/1000; }
+
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.fillStyle = '#0e1114'; ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.setTransform(scale,0,0,scale,ox,oy);
+
+  // grass surround + asphalt
+  ctx.fillStyle = '#3d6b35'; ctx.fillRect(0,0,W,H);
+  ctx.fillStyle = '#33373c'; ctx.fillRect(24,24,W-48,H-48);
+  // subtle asphalt noise
+  ctx.fillStyle = 'rgba(255,255,255,.02)';
+  for (let i=0;i<40;i++){ ctx.fillRect((i*197)%W, (i*331)%H, 30, 30); }
+
+  // entrance arrow
+  ctx.fillStyle = '#f1c40f';
+  ctx.font = 'bold 22px system-ui'; ctx.textAlign = 'center';
+  ctx.fillText('ENTRANCE ▼', entrance.x, H-38);
+
+  // parking spots
+  const t = ts/1000;
+  for (const s of spots) {
+    ctx.save(); ctx.translate(s.x, s.y); ctx.rotate(s.a + Math.PI/2);
+    // bay
+    if (s.target) {
+      const pulse = 0.55 + 0.35*Math.sin(t*5);
+      ctx.fillStyle = `rgba(46,204,113,${0.22+pulse*0.25})`;
+      ctx.fillRect(-s.w/2, -s.l/2, s.w, s.l);
+      ctx.strokeStyle = '#2ecc71'; ctx.lineWidth = 4;
+      ctx.setLineDash([12,8]); ctx.lineDashOffset = -t*40;
+      ctx.strokeRect(-s.w/2, -s.l/2, s.w, s.l);
+      ctx.setLineDash([]);
+    } else {
+      ctx.strokeStyle = s.occupied ? 'rgba(255,255,255,.25)' : 'rgba(255,255,255,.75)';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(-s.w/2,-s.l/2); ctx.lineTo(-s.w/2,s.l/2);
+      ctx.moveTo(s.w/2,-s.l/2); ctx.lineTo(s.w/2,s.l/2);
+      ctx.moveTo(-s.w/2,-s.l/2); ctx.lineTo(s.w/2,-s.l/2);
+      ctx.stroke();
+    }
+    if (s.target) {
+      ctx.fillStyle = '#2ecc71';
+      ctx.font = 'bold 20px system-ui';
+      const label = s.kind === '∥' ? 'PARK HERE ∥' : `PARK HERE ${s.kind}`;
+      // keep text readable in narrow parallel bays: shrink if needed
+      if (s.kind === '∥' && s.w < 52) ctx.font = 'bold 16px system-ui';
+      ctx.fillText(label, 0, 8);
+    }
+    ctx.restore();
+  }
+
+  // walls / pillars
+  for (const wl of walls){
+    ctx.fillStyle = '#c9ced4';
+    ctx.fillRect(wl.x, wl.y, wl.w, wl.h);
+    ctx.fillStyle = 'rgba(0,0,0,.25)';
+    ctx.fillRect(wl.x, wl.y+wl.h-5, wl.w, 5);
+    if (wl.w < 60 && wl.h < 60) { ctx.fillStyle='#e67e22'; ctx.fillRect(wl.x+4,wl.y+4,wl.w-8,wl.h-8); }
+  }
+
+  // trail (where you've been → learn your trajectory)
+  if (showTrail && trail.length > 1) {
+    ctx.strokeStyle = 'rgba(77,163,255,.55)'; ctx.lineWidth = 3;
+    ctx.beginPath();
+    trail.forEach((p,i)=> i? ctx.lineTo(p.x,p.y) : ctx.moveTo(p.x,p.y));
+    ctx.stroke();
+  }
+
+  // predicted path (where you'll go with current lock)
+  if (showGuide && !won) {
+    ctx.save();
+    ctx.strokeStyle = Math.abs(car.steer) < 0.03 ? 'rgba(255,255,255,.4)' : '#4da3ff';
+    ctx.lineWidth = 3; ctx.setLineDash([10,8]);
+    ctx.beginPath();
+    let gx=car.x, gy=car.y, ga=car.a;
+    const dir = car.v < -1 ? -1 : 1;   // rolling back → project backwards
+    ctx.moveTo(gx,gy);
+    for (let i=0;i<50;i++){
+      ga += (dir*60/WHEELBASE)*Math.tan(car.steer)*0.05;
+      gx += Math.cos(ga)*dir*60*0.05; gy += Math.sin(ga)*dir*60*0.05;
+      ctx.lineTo(gx,gy);
+    }
+    ctx.stroke(); ctx.restore();
+  }
+
+  for (const p of parked) drawCar(p.x, p.y, p.a, 0, { color:p.color, guide:false, plain:true });
+
+  if (crashFlash > 0) { ctx.fillStyle = `rgba(255,59,48,${crashFlash})`; ctx.fillRect(0,0,W,H); }
+
+  drawCar(car.x, car.y, car.a, car.steer, { braking:car.braking, reverse:car.reversing, crashed:crashFlash>0 });
+
+  updateHud();
+  requestAnimationFrame(draw);
+}
+
+// ---------- HUD ----------
+const el = id => document.getElementById(id);
+let msgIsHit = false;
+function setMsg(m, cls) {
+  const e = el('msg'); e.textContent = m;
+  e.className = cls || ''; msgIsHit = (cls === 'hit');
+}
+function updateHud() {
+  el('speed').textContent = `${Math.abs(car.v*0.35).toFixed(0)} km/h`;
+  el('gear').textContent = car.v < -1 ? 'R' : 'D';
+  const deg = car.steer*180/Math.PI;
+  el('steerTxt').textContent = `${deg.toFixed(0)}° ${deg<-2?'◀':deg>2?'▶':'·'}`;
+  el('hits').textContent = hits;
+  el('time').textContent = `${elapsed.toFixed(1)}s`;
+  el('statLine').textContent = `steer ${deg.toFixed(0)}° · ${Math.abs(car.v*0.35).toFixed(0)} km/h · ${hits} hits`;
+  const bar = el('steerBar');
+  const frac = car.steer / MAX_STEER; // -1..1
+  const mid = 50;
+  bar.style.left = (frac < 0 ? mid + frac*48 : mid) + '%';
+  bar.style.width = Math.abs(frac)*48 + '%';
+  bar.style.background = Math.abs(frac) < 0.05 ? '#2ecc71' : '#4da3ff';
+  el('steerWheel').style.transform = `rotate(${frac*135}deg)`;
+  el('steerWheel').textContent = Math.abs(frac)<0.05 ? '⬆️' : '🔄';
+  el('brakeLamp').className = 'lamp' + (car.braking ? ' on-red' : '');
+  el('revLamp').className = 'lamp' + (car.reversing ? ' on-white' : '');
+}
+
+resize(); reset();
+requestAnimationFrame(ts => { lastTs = ts; requestAnimationFrame(draw); });
+})();
+</script>
+</body>
+</html>
