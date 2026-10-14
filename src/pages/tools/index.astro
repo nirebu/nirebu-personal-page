@@ -1,0 +1,31 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base title="Tools" description="Small browser utilities by Nicolò Rebughini">
+  <article class="post font-mono">
+    <header class="post-header mb-8">
+      <h1 class="font-mono leading-tight text-3xl font-bold text-black mb-4 mt-8 border-b-2 border-indigo-600 pb-2">
+        Tools
+      </h1>
+    </header>
+
+    <div class="markdown">
+      <p>Small utilities that run entirely in your browser. No accounts, no uploads — your files never leave your device.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12 mt-6">
+      <a href="/tools/out-of-black/" class="project-card group">
+        <div class="bg-gray-800 text-white p-6 border-2 border-gray-800 hover:border-purple-600 transition-all h-full">
+          <div class="text-sm text-purple-400 mb-2 font-bold">001</div>
+          <h3 class="text-xl font-bold mb-2 group-hover:text-purple-400 transition-colors">
+            I'm out of black
+          </h3>
+          <div class="text-gray-300 text-sm">
+            Convert PDFs &amp; images to a dark ink color when the black cartridge runs dry.
+          </div>
+        </div>
+      </a>
+    </div>
+  </article>
+</Base>

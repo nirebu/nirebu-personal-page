@@ -1,0 +1,43 @@
+---
+import Base from '../../../layouts/Base.astro';
+import VideoList from '../../../components/VideoList.astro';
+import { videos } from '../../../data/site';
+
+export async function getStaticPaths() {
+  const perPage = 10;
+  const totalPages = Math.ceil(videos.length / perPage);
+  // Page 1 lives at /videos/, so only generate 2..N here (same URLs as Jekyll)
+  return Array.from({ length: totalPages - 1 }, (_, i) => {
+    const pageNum = i + 2;
+    const chunk = videos.slice((pageNum - 1) * perPage, pageNum * perPage);
+    return {
+      params: { page: String(pageNum) },
+      props: {
+        pageVideos: chunk,
+        currentPage: pageNum,
+        totalPages,
+      },
+    };
+  });
+}
+
+interface Props {
+  pageVideos: typeof videos;
+  currentPage: number;
+  totalPages: number;
+}
+
+const { pageVideos, currentPage, totalPages } = Astro.props as Props;
+const prevUrl = currentPage === 2 ? '/videos/' : `/videos/page/${currentPage - 1}/`;
+const nextUrl = currentPage < totalPages ? `/videos/page/${currentPage + 1}/` : undefined;
+---
+
+<Base title="Videos" description="YouTube videos by Nicolò Rebughini (in Italian)">
+  <VideoList
+    videos={pageVideos}
+    currentPage={currentPage}
+    totalPages={totalPages}
+    prevUrl={prevUrl}
+    nextUrl={nextUrl}
+  />
+</Base>

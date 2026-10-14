@@ -1,0 +1,46 @@
+---
+import '../styles/global.css';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import PostHog from '../components/PostHog.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'The quiet place' } = Astro.props;
+const siteUrl = (Astro.site?.toString() ?? 'https://nirebu.com/').replace(/\/$/, '');
+const canonical = new URL(Astro.url.pathname, siteUrl + '/').toString();
+const fullTitle = title === 'Home' ? 'Nicolò Rebughini' : `${title} | Nicolò Rebughini`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@nirebu" />
+    <link rel="alternate" type="application/rss+xml" title="Nicolò Rebughini" href="/rss.xml" />
+    {import.meta.env.PROD && <PostHog />}
+  </head>
+  <body class="flex flex-col min-h-screen font-mono" style="background-color: #f5f1e8;">
+    <Navbar />
+    <main
+      class="container max-w-5xl mx-auto px-12 py-16 lg:px-8 flex-grow"
+      style="background-color: #faf8f3;"
+      aria-label="Content"
+    >
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

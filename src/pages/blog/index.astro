@@ -1,0 +1,43 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => data.published !== false)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+function formatDate(d: Date) {
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+---
+
+<Base title="Blog" description="Articles by Nicolò Rebughini">
+  <div class="home font-mono">
+    <div class="markdown"></div>
+    <div class="mt-8">
+      <section class="font-mono">
+        <h2 class="font-mono font-bold text-2xl text-black mb-6">
+          <span class="text-indigo-600">## </span>latest_posts
+        </h2>
+        {posts.map((post) => (
+          <article class="py-4 border-b border-gray-200 list-none last:border-b-0">
+            <h3 class="mb-2">
+              <a
+                class="text-lg font-bold text-black hover:text-indigo-600 transition-colors font-mono"
+                href={`/blog/${post.id}/`}
+              >
+                <span class="text-indigo-600">[</span>{post.data.title}<span class="text-indigo-600">]</span>
+              </a>
+            </h3>
+            {post.data.description && (
+              <p class="mt-2 text-sm text-black font-mono">{post.data.description}</p>
+            )}
+            <p class="mt-2 text-xs text-black font-mono">
+              <span class="text-indigo-600 font-bold">$</span> published {formatDate(post.data.date)}
+            </p>
+          </article>
+        ))}
+      </section>
+    </div>
+  </div>
+</Base>

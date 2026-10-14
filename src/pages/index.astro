@@ -1,0 +1,71 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { SITE } from '../data/site';
+
+const posts = (await getCollection('blog', ({ data }) => data.published !== false)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+const latest = posts.slice(0, 4);
+
+function formatDate(d: Date) {
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+function pad(n: number) {
+  return String(n).padStart(3, '0');
+}
+---
+
+<Base title="Home" description={SITE.description}>
+  <section class="mb-16">
+    <div class="text-sm uppercase tracking-wider text-purple-600 font-bold mb-2">
+      INTRO
+    </div>
+    <h1 class="text-5xl lg:text-6xl font-bold text-gray-800 mb-6 leading-tight">
+      I'm Nicolò
+    </h1>
+
+    <div class="markdown text-lg">
+      <p>
+        At <a href="https://fuzu.com">Fuzu</a> I'm building scalable products as a{' '}
+        <strong>Senior Software Engineer</strong>. Everything I do combines{' '}
+        <strong>Software Engineering</strong>, <strong>Cyber Security</strong>, and a passion{' '}
+        for modern tech.
+      </p>
+      <p>
+        My current tech stack includes <strong>Ruby</strong>, <strong>Rails</strong>,{' '}
+        <strong>Python</strong>, <strong>AI</strong>, and <strong>multilanguage embeddings</strong>.{' '}
+        I also run a <a href={SITE.youtubeUrl}><strong>YouTube channel</strong></a> (in Italian 🇮🇹){' '}
+        about <strong>Coding</strong>, <strong>AI</strong>, and{' '}
+        <strong>Cyber Security Awareness</strong>.
+      </p>
+      <p>
+        Reach out <a href="mailto:me@nirebu.com">via email</a> or check out my work below.
+      </p>
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <div class="text-sm uppercase tracking-wider text-purple-600 font-bold mb-4">
+      LATEST WORK
+    </div>
+  </section>
+
+  <div class="home font-mono">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+      {latest.map((post, i) => (
+        <a href={`/blog/${post.id}/`} class="project-card group">
+          <div class="bg-gray-800 text-white p-6 border-2 border-gray-800 hover:border-purple-600 transition-all h-full">
+            <div class="text-sm text-purple-400 mb-2 font-bold">{pad(i + 1)}</div>
+            <h3 class="text-xl font-bold mb-2 group-hover:text-purple-400 transition-colors">
+              {post.data.title}
+            </h3>
+            <div class="text-gray-300 text-sm">{formatDate(post.data.date)}</div>
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <a class="btn-primary" href="/blog/">VIEW ALL ARTICLES</a>
+  </div>
+</Base>
