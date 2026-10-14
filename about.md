@@ -17,6 +17,8 @@ In my spare time, I run a **YouTube channel** (in Italian 🇮🇹) covering **C
 
 At [Nebulab](https://nebulab.com), I focused on designing and developing distributed, resilient eCommerce systems with high throughput, performance, and security in mind. I worked extensively with **Ruby**, **Rails**, **Stimulus**, **Heroku**, and **AWS** (Lambda, RDS, SQS, ECS) while leading engineering initiatives.
 
+I led the company's **AI adoption initiative**, standardising tooling, governance, and knowledge sharing across teams. I also authored the open source Ruby gem [active_shopify_graphql](https://github.com/nebulab/active_shopify_graphql), which brings ActiveRecord-like domain modeling to Shopify GraphQL APIs.
+
 ### DevOps Consultant for Payment Processor
 
 Consultancy work as a **DevOps Engineer** kicking off a Kubernetes environment and CI/CD pipeline for a Payment Processor. Tech stack was Java, Maven, Jenkins, SonarQube, Kubernetes, Docker, and Oracle Cloud.
