@@ -1,0 +1,30 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props as Props;
+
+function formatDate(d: Date) {
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+---
+
+<article class="py-4 border-b border-gray-200 list-none last:border-b-0">
+  <h3 class="mb-2">
+    <a
+      class="text-lg font-bold text-black hover:text-purple-600 transition-colors font-mono"
+      href={`/blog/${post.id}/`}
+    >
+      <span class="text-purple-600">[</span>{post.data.title}<span class="text-purple-600">]</span>
+    </a>
+  </h3>
+  {post.data.description && (
+    <p class="mt-2 text-sm text-black font-mono">{post.data.description}</p>
+  )}
+  <p class="mt-2 text-xs text-black font-mono">
+    <span class="text-purple-600 font-bold">$</span> published {formatDate(post.data.date)}
+  </p>
+</article>

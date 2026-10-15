@@ -2,15 +2,16 @@
 import Base from '../../layouts/Base.astro';
 import CardLink from '../../components/CardLink.astro';
 import PageTitle from '../../components/PageTitle.astro';
+import Prose from '../../components/Prose.astro';
 ---
 
 <Base title="Tools" description="Small browser utilities by Nicolò Rebughini">
   <article class="post font-mono">
     <PageTitle title="Tools" />
 
-    <div class="markdown">
+    <Prose>
       <p>Small utilities that run entirely in your browser. No accounts, no uploads — your files never leave your device.</p>
-    </div>
+    </Prose>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12 mt-6">
       <CardLink

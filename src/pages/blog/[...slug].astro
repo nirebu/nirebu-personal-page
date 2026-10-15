@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import PageTitle from '../../components/PageTitle.astro';
+import Prose from '../../components/Prose.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -42,8 +43,8 @@ function formatDate(d: Date) {
       </p>
     </div>
 
-    <div class="mt-8 markdown" itemprop="articleBody">
+    <Prose class="mt-8" itemprop="articleBody">
       <Content />
-    </div>
+    </Prose>
   </article>
 </Base>

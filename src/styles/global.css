@@ -34,6 +34,14 @@
     @apply inline-block px-6 py-3 bg-gray-800 text-white border-2 border-gray-800;
     @apply hover:bg-purple-600 hover:border-purple-600 hover:text-white;
     @apply font-bold uppercase text-sm tracking-wider transition-all font-mono;
+    @apply disabled:opacity-40 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply inline-block px-6 py-3 bg-white text-gray-800 border-2 border-gray-800;
+    @apply hover:border-purple-600 hover:text-purple-600;
+    @apply font-bold uppercase text-sm tracking-wider transition-all font-mono;
+    @apply disabled:opacity-40 disabled:cursor-not-allowed;
   }
 
   .btn-nav {
@@ -42,81 +50,81 @@
     @apply font-bold transition-all;
   }
 
-  .markdown {
+  .prose {
     @apply text-gray-700 leading-relaxed mb-4 font-mono;
   }
-  .markdown > * + *,
-  .markdown li > p + p {
+  .prose > * + *,
+  .prose li > p + p {
     @apply mt-6;
   }
-  .markdown p + p {
+  .prose p + p {
     @apply mt-4;
   }
-  .markdown li + li {
+  .prose li + li {
     @apply mt-2;
   }
-  .markdown strong {
+  .prose strong {
     @apply text-gray-800 font-bold;
   }
-  .markdown a:not(.btn-primary):not(.btn-nav) {
+  .prose a:not(.btn-primary):not(.btn-nav) {
     @apply font-mono font-bold;
     text-decoration: underline;
     text-decoration-color: #9333ea;
     text-decoration-thickness: 2px;
     text-underline-offset: 3px;
   }
-  .markdown a:not(.btn-primary):not(.btn-nav):hover {
+  .prose a:not(.btn-primary):not(.btn-nav):hover {
     @apply text-purple-600;
   }
-  .markdown strong a:not(.btn-primary):not(.btn-nav) {
+  .prose strong a:not(.btn-primary):not(.btn-nav) {
     @apply font-bold;
   }
-  .markdown h1 {
+  .prose h1 {
     @apply leading-tight text-3xl font-bold text-gray-800 mb-4 mt-8 font-mono;
     border-bottom: 2px solid #9333ea;
     padding-bottom: 8px;
   }
-  .markdown h2 {
+  .prose h2 {
     @apply leading-tight text-xl font-bold text-gray-800 mb-3 mt-8 font-mono;
   }
-  .markdown h2::before {
+  .prose h2::before {
     content: "## ";
     @apply text-purple-600;
   }
-  .markdown h3 {
+  .prose h3 {
     @apply leading-tight text-lg font-bold text-gray-800 mt-6 mb-2 font-mono;
   }
-  .markdown h3::before {
+  .prose h3::before {
     content: "### ";
     @apply text-purple-600;
   }
-  .markdown code {
+  .prose code {
     @apply font-mono text-sm inline bg-black text-white py-1 px-2;
     border-radius: 2px;
   }
-  .markdown pre {
+  .prose pre {
     @apply bg-black p-4 my-4 overflow-x-auto;
     border-radius: 2px;
     border-left: 4px solid #9333ea;
   }
-  .markdown pre code {
+  .prose pre code {
     @apply block bg-transparent text-white p-0;
   }
-  .markdown blockquote {
+  .prose blockquote {
     @apply border-l-4 border-purple-600 bg-gray-50 p-4 my-4 font-mono;
   }
-  .markdown blockquote::before {
+  .prose blockquote::before {
     content: "> ";
     @apply text-purple-600 font-bold;
   }
-  .markdown ul,
-  .markdown ol {
+  .prose ul,
+  .prose ol {
     @apply pl-8 my-4 font-mono;
   }
-  .markdown ul {
+  .prose ul {
     list-style: none;
   }
-  .markdown ul li::before {
+  .prose ul li::before {
     content: "• ";
     @apply text-purple-600 font-bold mr-2;
   }

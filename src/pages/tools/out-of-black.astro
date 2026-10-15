@@ -1,13 +1,14 @@
 ---
 import Base from '../../layouts/Base.astro';
+import Prose from '../../components/Prose.astro';
 ---
 
 <Base title="I'm out of black" description="Convert PDFs and images to a dark ink color when the black cartridge runs dry. Runs in your browser.">
 
 
-<div class="markdown mb-6">
+<Prose class="mb-6">
   <p>Out of black ink? Convert a PDF or image to a dark color your printer can still print — everything happens in your browser, files never leave your device.</p>
-</div>
+</Prose>
 
 <div class="bg-white border-2 border-gray-200 p-6 mb-8">
   <div id="drop" role="button" tabindex="0" aria-label="Drop a PDF or image here, or click to choose"
@@ -37,20 +38,20 @@ import Base from '../../layouts/Base.astro';
     </div>
   </div>
   <div class="flex flex-wrap items-center gap-3 mt-4">
-    <button id="downloadPdf" class="btn-primary disabled:opacity-40 disabled:cursor-not-allowed" disabled>⬇ Download PDF</button>
-    <button id="printBtn" class="px-6 py-3 bg-white text-gray-800 border-2 border-gray-800 font-bold uppercase text-sm tracking-wider transition-all font-mono hover:border-purple-600 hover:text-purple-600 disabled:opacity-40 disabled:cursor-not-allowed" disabled>🖨 Print</button>
-    <button id="resetBtn" class="px-6 py-3 bg-white text-gray-800 border-2 border-gray-800 font-bold uppercase text-sm tracking-wider transition-all font-mono hover:border-purple-600 hover:text-purple-600 disabled:opacity-40 disabled:cursor-not-allowed" disabled>↻ Clear</button>
+    <button id="downloadPdf" class="btn-primary" disabled>⬇ Download PDF</button>
+    <button id="printBtn" class="btn-secondary" disabled>🖨 Print</button>
+    <button id="resetBtn" class="btn-secondary" disabled>↻ Clear</button>
   </div>
   <div id="status" class="text-sm mt-4 text-gray-500" aria-live="polite">Libraries loading…</div>
   <div id="pages" class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6"></div>
 </div>
 
-<div class="markdown mt-8">
+<Prose class="mt-8">
   <p>Out of black ink but need to print a shipping label or document? The tool above converts a <strong>PDF or image</strong> to a dark ink color of your choice so your printer skips the empty black cartridge. Files <strong>never leave your device</strong>.</p>
   <p>Mapping: white stays white <code>(255,255,255)</code> (no ink), black becomes the full ink color, greys become light tints. Only dark inks are offered — blue, red, magenta, dark green — so the page still reads as black/dark-grey if someone photocopies it in B&amp;W. The output PDF keeps the original page size.</p>
-</div>
+</Prose>
 
-<div class="markdown">
+<Prose>
   <details>
     <summary>How it works &amp; privacy</summary>
     <ol class="list-decimal">
@@ -61,7 +62,7 @@ import Base from '../../layouts/Base.astro';
     </ol>
     <p><strong>Privacy:</strong> no server, no upload — open DevTools → Network and watch: the only requests are the CDN libraries. Note the output is rasterized (text is no longer selectable) — ideal for labels and forms.</p>
   </details>
-</div>
+</Prose>
 
 <style>
   #drop.over { border-color: #9333ea; background: #faf5ff; }

@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import CardLink from '../components/CardLink.astro';
+import Prose from '../components/Prose.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import { getCollection } from 'astro:content';
 import { SITE } from '../data/site';
@@ -22,7 +23,7 @@ function formatDate(d: Date) {
       I'm Nicolò
     </h1>
 
-    <div class="markdown text-lg">
+    <Prose class="text-lg">
       <p>
         At <a href="https://fuzu.com">Fuzu</a> I'm building scalable products as a{' '}
         <strong>Senior Software Engineer</strong>. Everything I do combines{' '}
@@ -39,7 +40,7 @@ function formatDate(d: Date) {
       <p>
         Reach out <a href="mailto:me@nirebu.com">via email</a> or check out my work below.
       </p>
-    </div>
+    </Prose>
   </section>
 
   <section class="mb-12">
