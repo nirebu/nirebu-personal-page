@@ -1,0 +1,14 @@
+---
+// Single source of truth for section labels ("INTRO", "LATEST WORK", ...).
+// (Previously split between uppercase eyebrow divs on home and a
+// `## latest_posts` terminal-style h2 on the blog index.)
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props as Props;
+---
+
+<h2 class="text-sm uppercase tracking-wider text-purple-600 font-bold mb-4 font-mono">
+  {title}
+</h2>

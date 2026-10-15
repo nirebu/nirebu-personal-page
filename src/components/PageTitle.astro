@@ -1,0 +1,21 @@
+---
+// Single source of truth for top-level page titles.
+// (Previously copy-pasted across projects/tools/videos/post pages with
+// mixed indigo-600 vs purple-600 accents and black vs gray-800 text.)
+interface Props {
+  title: string;
+  /** e.g. itemprop="name headline" on blog post titles */
+  itemprop?: string;
+}
+
+const { title, itemprop } = Astro.props as Props;
+---
+
+<header class="mb-8">
+  <h1
+    class="font-mono leading-tight text-3xl font-bold text-gray-800 mb-4 mt-8 border-b-2 border-purple-600 pb-2"
+    itemprop={itemprop}
+  >
+    {title}
+  </h1>
+</header>
