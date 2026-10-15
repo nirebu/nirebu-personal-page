@@ -1,6 +1,7 @@
 export const SITE = {
   title: 'Nicolò Rebughini',
-  description: 'The quiet place',
+  description:
+    'Nicolò Rebughini — Senior Software Engineer writing about Ruby, Rails, AI and cybersecurity. Blog, projects and videos.',
   url: 'https://nirebu.com',
   youtubeUrl: 'https://www.youtube.com/@nirebu',
 } as const;
