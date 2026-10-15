@@ -1,0 +1,41 @@
+---
+import type { Video } from '../data/site';
+
+interface Props {
+  video: Video;
+}
+
+const { video } = Astro.props as Props;
+---
+
+<div class="bg-gray-800 text-white p-6 border-2 border-gray-800 hover:border-purple-600 transition-all">
+  <div class="flex items-center justify-between mb-2">
+    <span class="text-sm text-purple-400 font-bold">{video.category}</span>
+    <span class="text-xs text-gray-400">Ep. {video.episode}</span>
+  </div>
+  <h3 class="text-xl font-bold mb-2">
+    {video.youtube_id ? (
+      <a href={`https://www.youtube.com/watch?v=${video.youtube_id}`} target="_blank" class="text-white hover:text-purple-400 transition-colors">
+        {video.title}
+      </a>
+    ) : (
+      video.title
+    )}
+  </h3>
+  <p class="text-gray-300 text-sm mb-4">{video.description}</p>
+  {video.youtube_id ? (
+    <div class="relative h-0 overflow-hidden bg-gray-800 border-2 border-gray-700" style="padding-bottom: 56.25%;">
+      <iframe
+        class="absolute top-0 left-0 w-full h-full border-0"
+        src={`https://www.youtube.com/embed/${video.youtube_id}`}
+        title={video.title}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+      />
+    </div>
+  ) : (
+    <div class="text-sm text-gray-400 italic">
+      (Video ID not set. <a href="https://www.youtube.com/@nirebu" class="text-purple-400 hover:underline">Visit Channel</a>)
+    </div>
+  )}
+</div>

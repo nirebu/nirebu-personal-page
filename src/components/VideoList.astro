@@ -1,0 +1,57 @@
+---
+import type { Video } from '../data/site';
+import PageTitle from './PageTitle.astro';
+import Prose from './Prose.astro';
+import VideoCard from './VideoCard.astro';
+
+interface Props {
+  videos: Video[];
+  currentPage: number;
+  totalPages: number;
+  prevUrl?: string;
+  nextUrl?: string;
+}
+
+const { videos, currentPage, totalPages, prevUrl, nextUrl } = Astro.props as Props;
+---
+
+<article class="post font-mono">
+  <PageTitle title="Videos" />
+
+  <Prose>
+    <p>Here is a collection of my YouTube videos (in Italian 🇮🇹). I talk about Digital Awareness, Ruby Programming, and sometimes Artificial Intelligence.</p>
+  </Prose>
+
+  <div class="bg-gray-800 text-white p-6 border-2 border-gray-800 mb-8 mt-6">
+    <div class="text-sm text-purple-400 mb-2 font-bold">FEATURED</div>
+    <h3 class="text-xl font-bold mb-2">🎓 Ruby Course</h3>
+    <div class="text-gray-300 text-sm">
+      Interested in learning Ruby? Check out my complete
+      <a href="https://www.youtube.com/playlist?list=PLrwPD9g3LY7IDGPJPVcNarrIGPbh0IelA" target="_blank" class="underline font-semibold text-white hover:text-purple-400">Ruby Course Playlist</a>.
+    </div>
+  </div>
+
+  <div class="mt-8 grid gap-6 md:grid-cols-1 mb-12">
+    {videos.map((video) => (
+      <VideoCard video={video} />
+    ))}
+  </div>
+
+  {totalPages > 1 && (
+    <div class="flex justify-between items-center mt-8 mb-12">
+      {prevUrl ? (
+        <a href={prevUrl} class="btn-primary">&larr; Newer Videos</a>
+      ) : (
+        <span />
+      )}
+      <span class="text-gray-600 text-sm uppercase tracking-wider font-bold">
+        Page {currentPage} of {totalPages}
+      </span>
+      {nextUrl ? (
+        <a href={nextUrl} class="btn-primary">Older Videos &rarr;</a>
+      ) : (
+        <span />
+      )}
+    </div>
+  )}
+</article>

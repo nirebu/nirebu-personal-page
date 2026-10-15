@@ -1,0 +1,18 @@
+---
+import Base from '../../layouts/Base.astro';
+import VideoList from '../../components/VideoList.astro';
+import { videos } from '../../data/site';
+
+const perPage = 10;
+const totalPages = Math.ceil(videos.length / perPage);
+const pageVideos = videos.slice(0, perPage);
+---
+
+<Base title="Videos" description="YouTube videos by Nicolò Rebughini (in Italian)">
+  <VideoList
+    videos={pageVideos}
+    currentPage={1}
+    totalPages={totalPages}
+    nextUrl={totalPages > 1 ? '/videos/page/2/' : undefined}
+  />
+</Base>

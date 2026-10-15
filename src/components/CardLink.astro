@@ -1,0 +1,21 @@
+---
+interface Props {
+  href: string;
+  index: number;
+  title: string;
+  description: string;
+}
+
+const { href, index, title, description } = Astro.props as Props;
+const number = String(index).padStart(3, '0');
+---
+
+<a href={href} class="project-card group">
+  <div class="bg-gray-800 text-white p-6 border-2 border-gray-800 hover:border-purple-600 transition-all h-full">
+    <div class="text-sm text-purple-400 mb-2 font-bold">{number}</div>
+    <h3 class="text-xl font-bold mb-2 group-hover:text-purple-400 transition-colors">
+      {title}
+    </h3>
+    <div class="text-gray-300 text-sm">{description}</div>
+  </div>
+</a>

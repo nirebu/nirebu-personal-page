@@ -1,0 +1,156 @@
+@import "tailwindcss";
+
+/*
+ * Custom styles live in cascade layers so that explicit Tailwind
+ * utilities (e.g. `text-white` on a card title) always win over them.
+ * Layer order in v4: theme -> base -> components -> utilities.
+ */
+
+@layer base {
+  /* Clean minimal background */
+  body {
+    background-color: #f5f1e8;
+    @apply font-mono;
+  }
+
+  a {
+    @apply text-gray-700 font-mono font-bold;
+    text-decoration: none;
+    position: relative;
+  }
+
+  a:hover {
+    @apply text-purple-600;
+  }
+}
+
+@layer components {
+  .project-card {
+    text-decoration: none;
+    display: block;
+  }
+
+  .btn-primary {
+    @apply inline-block px-6 py-3 bg-gray-800 text-white border-2 border-gray-800;
+    @apply hover:bg-purple-600 hover:border-purple-600 hover:text-white;
+    @apply font-bold uppercase text-sm tracking-wider transition-all font-mono;
+    @apply disabled:opacity-40 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply inline-block px-6 py-3 bg-white text-gray-800 border-2 border-gray-800;
+    @apply hover:border-purple-600 hover:text-purple-600;
+    @apply font-bold uppercase text-sm tracking-wider transition-all font-mono;
+    @apply disabled:opacity-40 disabled:cursor-not-allowed;
+  }
+
+  .cursor-blink {
+    display: inline-block;
+    width: 0.55em;
+    height: 1em;
+    background-color: #9333ea;
+    margin-left: 0.12em;
+    vertical-align: -0.12em;
+    animation: blink 1.1s steps(1) infinite;
+  }
+
+  @keyframes blink {
+    0%, 55% {
+      opacity: 1;
+    }
+    56%, 100% {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cursor-blink {
+      animation: none;
+    }
+  }
+
+  .btn-nav {
+    @apply px-4 py-2 bg-gray-800 text-white;
+    @apply hover:bg-purple-600 hover:text-white;
+    @apply font-bold transition-all;
+  }
+
+  .prose {
+    @apply text-gray-700 leading-relaxed mb-4 font-mono;
+  }
+  .prose > * + *,
+  .prose li > p + p {
+    @apply mt-6;
+  }
+  .prose p + p {
+    @apply mt-4;
+  }
+  .prose li + li {
+    @apply mt-2;
+  }
+  .prose strong {
+    @apply text-gray-800 font-bold;
+  }
+  .prose a:not(.btn-primary):not(.btn-nav) {
+    @apply font-mono font-bold;
+    text-decoration: underline;
+    text-decoration-color: #9333ea;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+  .prose a:not(.btn-primary):not(.btn-nav):hover {
+    @apply text-purple-600;
+  }
+  .prose strong a:not(.btn-primary):not(.btn-nav) {
+    @apply font-bold;
+  }
+  .prose h1 {
+    @apply leading-tight text-3xl font-bold text-gray-800 mb-4 mt-8 font-mono;
+    border-bottom: 2px solid #9333ea;
+    padding-bottom: 8px;
+  }
+  .prose h2 {
+    @apply leading-tight text-xl font-bold text-gray-800 mb-3 mt-8 font-mono;
+  }
+  .prose h2::before {
+    content: "## ";
+    @apply text-purple-600;
+  }
+  .prose h3 {
+    @apply leading-tight text-lg font-bold text-gray-800 mt-6 mb-2 font-mono;
+  }
+  .prose h3::before {
+    content: "### ";
+    @apply text-purple-600;
+  }
+  .prose code {
+    @apply font-mono text-sm inline bg-black text-white py-1 px-2;
+    border-radius: 2px;
+  }
+  .prose pre {
+    @apply bg-black p-4 my-4 overflow-x-auto;
+    border-radius: 2px;
+    border-left: 4px solid #9333ea;
+  }
+  .prose pre code {
+    @apply block bg-transparent text-white p-0;
+  }
+  .prose blockquote {
+    @apply border-l-4 border-purple-600 bg-gray-50 p-4 my-4 font-mono;
+  }
+  .prose blockquote::before {
+    content: "> ";
+    @apply text-purple-600 font-bold;
+  }
+  .prose ul,
+  .prose ol {
+    @apply pl-8 my-4 font-mono;
+  }
+  .prose ul {
+    list-style: none;
+  }
+  .prose ul li::before {
+    content: "• ";
+    @apply text-purple-600 font-bold mr-2;
+  }
+}

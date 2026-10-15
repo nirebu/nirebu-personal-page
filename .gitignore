@@ -1,6 +1,10 @@
-_site
-.sass-cache
-.jekyll-cache
-.jekyll-metadata
-vendor
-node_modules
+# Astro build output
+dist/
+.astro/
+
+# Dependencies
+node_modules/
+
+# OS / editor
+.DS_Store
+*.log

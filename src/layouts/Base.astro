@@ -1,0 +1,89 @@
+---
+import '../styles/global.css';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import PostHog from '../components/PostHog.astro';
+
+interface ArticleMeta {
+  publishedTime?: string;
+  tags?: string[];
+  author?: string;
+}
+
+interface Props {
+  title: string;
+  description?: string;
+  ogType?: 'website' | 'article';
+  article?: ArticleMeta;
+  image?: string;
+  schema?: Record<string, unknown> | Array<Record<string, unknown>>;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = 'Nicolò Rebughini — Senior Software Engineer writing about Ruby, Rails, AI and cybersecurity. Blog, projects and videos.',
+  ogType = 'website',
+  article,
+  image = '/og.png',
+  schema,
+  noindex = false,
+} = Astro.props as Props;
+const siteUrl = (Astro.site?.toString() ?? 'https://nirebu.com/').replace(/\/$/, '');
+const canonical = new URL(Astro.url.pathname, siteUrl + '/').toString();
+const fullTitle = title === 'Home' ? 'Nicolò Rebughini' : `${title} | Nicolò Rebughini`;
+const ogImage = new URL(image, siteUrl + '/').toString();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="Nicolò Rebughini" />
+    <meta name="theme-color" content="#faf8f3" />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:site_name" content="Nicolò Rebughini" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Nicolò Rebughini — Senior Software Engineer" />
+    {ogType === 'article' && article?.publishedTime && (
+      <meta property="article:published_time" content={article.publishedTime} />
+    )}
+    {ogType === 'article' && article?.author && (
+      <meta property="article:author" content={article.author} />
+    )}
+    {ogType === 'article' &&
+      article?.tags?.map((tag) => <meta property="article:tag" content={tag} />)}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@nirebu" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <link rel="alternate" type="application/rss+xml" title="Nicolò Rebughini" href="/rss.xml" />
+    {schema && (
+      <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    )}
+    {import.meta.env.PROD && <PostHog />}
+  </head>
+  <body class="flex flex-col min-h-screen font-mono" style="background-color: #f5f1e8;">
+    <Navbar />
+    <main
+      class="container max-w-5xl mx-auto px-12 py-16 lg:px-8 flex-grow"
+      style="background-color: #faf8f3;"
+      aria-label="Content"
+    >
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

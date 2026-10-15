@@ -1,0 +1,86 @@
+---
+import Base from '../layouts/Base.astro';
+import CardLink from '../components/CardLink.astro';
+import Prose from '../components/Prose.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import { getCollection } from 'astro:content';
+import { SITE } from '../data/site';
+
+const posts = (await getCollection('blog', ({ data }) => data.published !== false)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+const latest = posts.slice(0, 4);
+
+function formatDate(d: Date) {
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+---
+
+<Base
+  title="Home"
+  description={SITE.description}
+  schema={[
+    {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: SITE.title,
+      url: SITE.url,
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Person',
+      name: 'Nicolò Rebughini',
+      url: SITE.url,
+      jobTitle: 'Senior Software Engineer',
+      sameAs: [SITE.youtubeUrl, 'https://www.linkedin.com/in/nicolo-rebughini/'],
+    },
+  ]}
+>
+  <section class="mb-16">
+    <SectionHeading title="Intro" />
+    <h1 class="text-5xl lg:text-6xl font-bold text-gray-800 mb-4 leading-tight">
+      I'm Nicolò<span class="cursor-blink" aria-hidden="true"></span>
+    </h1>
+    <p class="text-lg text-gray-600 font-mono mb-8">
+      Senior Software Engineer · Ruby, Rails, AI — working remotely
+    </p>
+
+    <Prose class="text-lg">
+      <p>
+        At <a href="https://fuzu.com">Fuzu</a> I'm building scalable products as a{' '}
+        <strong>Senior Software Engineer</strong>. Everything I do combines{' '}
+        <strong>Software Engineering</strong>, <strong>Cyber Security</strong>, and a passion{' '}
+        for modern tech.
+      </p>
+      <p>
+        My current tech stack includes <strong>Ruby</strong>, <strong>Rails</strong>,{' '}
+        <strong>Python</strong>, <strong>AI</strong>, and <strong>multilanguage embeddings</strong>.{' '}
+        I also run a <a href={SITE.youtubeUrl}><strong>YouTube channel</strong></a> (in Italian 🇮🇹){' '}
+        about <strong>Coding</strong>, <strong>AI</strong>, and{' '}
+        <strong>Cyber Security Awareness</strong>.
+      </p>
+      <p>
+        Reach out <a href="mailto:me@nirebu.com">via email</a> or check out my work below.
+      </p>
+    </Prose>
+  </section>
+
+  <section class="mb-12">
+    <SectionHeading title="Latest work" />
+  </section>
+
+  <div class="home font-mono">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+      {latest.map((post, i) => (
+        <CardLink
+          href={`/blog/${post.id}/`}
+          index={i + 1}
+          title={post.data.title}
+          description={formatDate(post.data.date)}
+        />
+      ))}
+    </div>
+
+    <a class="btn-primary" href="/blog/">VIEW ALL ARTICLES</a>
+  </div>
+</Base>

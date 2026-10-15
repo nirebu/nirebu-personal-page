@@ -1,0 +1,15 @@
+---
+// Typography wrapper for hand-written copy and rendered Markdown.
+// (Replaces raw `<div class="markdown">` divs; the `.prose` styles in
+// global.css are still what styles blog post bodies.)
+interface Props {
+  class?: string;
+  itemprop?: string;
+}
+
+const { class: extra = '', itemprop } = Astro.props as Props;
+---
+
+<div class={`prose${extra ? ` ${extra}` : ''}`} itemprop={itemprop}>
+  <slot />
+</div>

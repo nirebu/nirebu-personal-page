@@ -1,0 +1,25 @@
+---
+import Base from '../../layouts/Base.astro';
+import CardLink from '../../components/CardLink.astro';
+import PageTitle from '../../components/PageTitle.astro';
+import Prose from '../../components/Prose.astro';
+---
+
+<Base title="Projects" description="Larger things built by Nicolò Rebughini">
+  <article class="post font-mono">
+    <PageTitle title="Projects" />
+
+    <Prose>
+      <p>Larger things I've built.</p>
+    </Prose>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12 mt-6">
+      <CardLink
+        href="/projects/festeggiati/"
+        index={1}
+        title="Festeggiati.it"
+        description="Directory of birthday promotions offered by businesses in Italy — Next.js, server-rendered and SEO-oriented."
+      />
+    </div>
+  </article>
+</Base>

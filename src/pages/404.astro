@@ -1,0 +1,13 @@
+---
+import Base from '../layouts/Base.astro';
+import PageTitle from '../components/PageTitle.astro';
+import Prose from '../components/Prose.astro';
+---
+
+<Base title="Page not found" description="404 — page not found" noindex>
+  <PageTitle title="404" />
+  <Prose>
+    <p><strong>Page not found :(</strong></p>
+    <p>The requested page could not be found.</p>
+  </Prose>
+</Base>

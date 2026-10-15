@@ -1,0 +1,23 @@
+---
+import Base from '../../layouts/Base.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import PostRow from '../../components/PostRow.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => data.published !== false)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+---
+
+<Base title="Blog" description="Articles by Nicolò Rebughini">
+  <div class="home font-mono">
+    <div class="mt-8">
+      <section class="font-mono">
+        <SectionHeading title="Latest posts" />
+        {posts.map((post) => (
+          <PostRow post={post} />
+        ))}
+      </section>
+    </div>
+  </div>
+</Base>
