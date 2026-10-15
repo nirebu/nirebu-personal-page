@@ -44,6 +44,11 @@ npm run build
 ```
 Preview the production build with `npm run preview`.
 
+## Deployment
+
+Deploys on Netlify, configured via `netlify.toml` (`npm run build` → `dist/`, Node 22).
+No account/CI changes needed when adding pages — push and Netlify rebuilds.
+
 ## Development Conventions
 
 *   **Content:** Blog posts are Markdown files in `src/content/blog/`. New videos go in the `videos` array in `src/data/site.ts`.

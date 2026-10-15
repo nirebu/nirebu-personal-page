@@ -9,7 +9,7 @@ interface Props {
   description?: string;
 }
 
-const { title, description = 'The quiet place' } = Astro.props;
+const { title, description = 'The quiet place' } = Astro.props as Props;
 const siteUrl = (Astro.site?.toString() ?? 'https://nirebu.com/').replace(/\/$/, '');
 const canonical = new URL(Astro.url.pathname, siteUrl + '/').toString();
 const fullTitle = title === 'Home' ? 'Nicolò Rebughini' : `${title} | Nicolò Rebughini`;

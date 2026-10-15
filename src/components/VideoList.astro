@@ -9,7 +9,7 @@ interface Props {
   nextUrl?: string;
 }
 
-const { videos, currentPage, totalPages, prevUrl, nextUrl } = Astro.props;
+const { videos, currentPage, totalPages, prevUrl, nextUrl } = Astro.props as Props;
 ---
 
 <article class="post font-mono">
