@@ -20,6 +20,8 @@
 /projects/festeggiati.html   /projects/festeggiati/  301
 /tools/out-of-black.html     /tools/out-of-black/    301
 
-# --- Machine-readable endpoints (jekyll-feed / jekyll-sitemap) ---
-/feed.xml     /rss.xml          301
-/sitemap.xml  /sitemap-index.xml 301
+# --- Machine-readable endpoints ---
+# /feed.xml (jekyll-feed) moved to /rss.xml. Note /sitemap.xml is NOT redirected:
+# it is a real file again (see singleSitemap() in astro.config.mjs) because
+# Search Console does not reliably follow redirected sitemap URLs.
+/feed.xml  /rss.xml  301

@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://nirebu.com/sitemap-index.xml
+Sitemap: https://nirebu.com/sitemap.xml

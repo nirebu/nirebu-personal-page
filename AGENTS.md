@@ -52,9 +52,14 @@ No account/CI changes needed when adding pages — push and Netlify rebuilds.
 `public/_redirects` (copied to `dist/_redirects`) holds 301s from the old Jekyll URL
 structure — posts lived at `/YYYY/MM/DD/slug.html`, pages at `/path/name.html`
 (`/about.html`, `/tools/out-of-black.html`, `/projects/festeggiati.html`), plus
-`/feed.xml` and `/sitemap.xml`. That list is a frozen migration mapping; new posts
-never had an old-style URL, so it does not need touching. Don't hard-link to old
-URLs in content — link to the canonical `/blog/<slug>/` path.
+`/feed.xml`. That list is a frozen migration mapping; new posts never had an old-style
+URL, so it does not need touching. Don't hard-link to old URLs in content — link to the
+canonical `/blog/<slug>/` path.
+
+The sitemap is a single `/sitemap.xml` (see `singleSitemap()` in `astro.config.mjs`) —
+`@astrojs/sitemap` emits an index plus chunks, which Search Console handles badly, so a
+build hook merges them back into one file at the conventional path. Keep `robots.txt`
+pointing at `/sitemap.xml` and never redirect that URL.
 
 ## Development Conventions
 
