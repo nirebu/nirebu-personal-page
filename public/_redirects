@@ -1,0 +1,25 @@
+# 301 redirects from the pre-Astro (Jekyll) URL structure.
+# Copied verbatim to dist/_redirects and honoured by Netlify.
+#
+# Jekyll's default permalink style was `/:year/:month/:day/:title.html`
+# for posts, and `/:path/:basename.html` for plain pages — so the old
+# URLs are frozen here. This list is a one-off migration mapping and does
+# not need updating for new posts (they only ever existed at /blog/<slug>/).
+#
+# Test with: curl -sI https://nirebu.com/<old-url> | head -1
+
+# --- Blog posts ---
+/2019/05/24/customise-polkit-user-list-default-current.html  /blog/customise-polkit-user-list-default-current/  301
+/2020/02/20/route-postfix-recipient-mx-records.html         /blog/route-postfix-recipient-mx-records/         301
+/2026/01/05/modern-laplace-demon.html                       /blog/modern-laplace-demon/                       301
+/2026/01/29/the-wave-is-coming.html                         /blog/the-wave-is-coming/                         301
+/2026/02/06/the-shadow-crew.html                            /blog/the-shadow-crew/                            301
+
+# --- Pages ---
+/about.html                  /about/                 301
+/projects/festeggiati.html   /projects/festeggiati/  301
+/tools/out-of-black.html     /tools/out-of-black/    301
+
+# --- Machine-readable endpoints (jekyll-feed / jekyll-sitemap) ---
+/feed.xml     /rss.xml          301
+/sitemap.xml  /sitemap-index.xml 301

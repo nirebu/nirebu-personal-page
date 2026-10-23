@@ -67,5 +67,5 @@ The new seniority is defined by how much complexity you can effectively offload 
 
 We are entering the era of the **Manager of Inanimate Objects**. It sounds less technical than "Staff Engineer," but it is the most robust way to future-proof a career. When we promote the AI from "threat" to "ally," we stop fighting for survival and start designing for scale.
 
-[The wave is here](https://nirebu.com/2026/01/29/the-wave-is-coming.html). Don't just ride it—bring your own crew. Assume command.
+[The wave is here](/blog/the-wave-is-coming/). Don't just ride it—bring your own crew. Assume command.
 

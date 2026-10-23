@@ -49,6 +49,13 @@ Preview the production build with `npm run preview`.
 Deploys on Netlify, configured via `netlify.toml` (`npm run build` → `dist/`, Node 22).
 No account/CI changes needed when adding pages — push and Netlify rebuilds.
 
+`public/_redirects` (copied to `dist/_redirects`) holds 301s from the old Jekyll URL
+structure — posts lived at `/YYYY/MM/DD/slug.html`, pages at `/path/name.html`
+(`/about.html`, `/tools/out-of-black.html`, `/projects/festeggiati.html`), plus
+`/feed.xml` and `/sitemap.xml`. That list is a frozen migration mapping; new posts
+never had an old-style URL, so it does not need touching. Don't hard-link to old
+URLs in content — link to the canonical `/blog/<slug>/` path.
+
 ## Development Conventions
 
 *   **Content:** Blog posts are Markdown files in `src/content/blog/`. New videos go in the `videos` array in `src/data/site.ts`.
