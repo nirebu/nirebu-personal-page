@@ -1,0 +1,37 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageTitle from '../../components/PageTitle.astro';
+import Prose from '../../components/Prose.astro';
+---
+
+<Base title="Stock Clipper" description="A local Qt 6 desktop app that turns camera footage into finished stock videos">
+  <PageTitle title="Stock Clipper" />
+  <Prose class="mb-6">
+    <p>Footage in. Stock clips out. A local desktop app for turning a folder of camera clips into individual stock videos: trim the part worth keeping, turn a sideways shot upright, flip it if the composition wants it, render one finished file per clip.</p>
+    <p>
+      <a class="btn-primary" href="https://github.com/nirebu/stock-clipper">Source on GitHub</a>
+    </p>
+  </Prose>
+
+  <img
+    src="/assets/images/stock-clipper.jpg"
+    alt="Stock Clipper with a vertical clip selected: the library on the left, the rotated preview on the stage, in/out handles on the filmstrip, and the render controls below"
+    class="w-full border-2 border-gray-800 mb-8"
+    loading="lazy"
+  />
+
+  <Prose class="mt-8">
+    <p><strong>Why I built it:</strong> submitting clips to stock sites is mostly trimming, rotating and exporting — basic editing that still meant opening a full NLE for every short clip, waiting for it to load a project just to do two cuts and a render. I wanted the boring part of managing footage to be a folder, a filmstrip and a render button, with everything else out of the way.</p>
+    <p><strong>What it does:</strong> point it at a source folder and the library lists every clip with duration, resolution, frame rate and audio codec. Set the in and out points by dragging handles on the filmstrip, with <code>I</code> and <code>O</code> at the playhead, or by typing exact times — then rotate in 90° steps, flip horizontally or vertically, and render. One render at a time, with progress, speed, cancel and retry.</p>
+    <p><strong>Rendering:</strong> only orientation is applied. Output keeps the clip's native resolution and frame rate — no scaling, no frame-rate conversion, no letterboxing — which is what stock sites expect. H.264 High MP4 by default, or ProRes 422 HQ / DNxHR HQX MOV for interchange. Audio is silent by default; supported codecs are stream-copied, PCM in MP4 is re-encoded to AAC.</p>
+    <p><strong>Stack:</strong> native Qt 6 / QML, C++ and CMake — one binary, no browser engine, no proxy files. It drives <code>ffmpeg</code> and <code>ffprobe</code> from your <code>PATH</code>, which means it is not bundled: those two need to be installed.</p>
+    <p><strong>No accounts, no telemetry:</strong> nothing in the app talks to a network. Cuts and settings are plain JSON under <code>~/.local/share/stock-clipper/</code>, caches under <code>~/.cache/stock-clipper/</code>, and the videos it writes are yours to submit wherever you like.</p>
+  </Prose>
+
+  <img
+    src="/assets/images/stock-clipper-settings.jpg"
+    alt="Stock Clipper settings: source and output folders with the system folder picker, output format, filename suffix, quality, encoding preset, short-clip warning and the default audio choice"
+    class="w-full border-2 border-gray-800 mt-8"
+    loading="lazy"
+  />
+</Base>
