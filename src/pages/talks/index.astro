@@ -1,0 +1,64 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageTitle from '../../components/PageTitle.astro';
+import Prose from '../../components/Prose.astro';
+import TalkCard from '../../components/TalkCard.astro';
+import { talks } from '../../data/talks';
+
+const schema = talks.flatMap((talk) =>
+  talk.appearances.map((appearance) => ({
+    '@context': 'https://schema.org',
+    '@type': 'Event',
+    name: talk.title,
+    startDate: appearance.date,
+    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    location: {
+      '@type': 'Place',
+      name: appearance.conference,
+      address: appearance.location,
+    },
+    performer: { '@type': 'Person', name: 'Nicolò Rebughini', url: 'https://nirebu.com' },
+    video: {
+      '@type': 'VideoObject',
+      name: talk.title,
+      contentUrl: `https://www.youtube.com/watch?v=${appearance.youtube_id}`,
+      embedUrl: `https://www.youtube.com/embed/${appearance.youtube_id}`,
+      thumbnailUrl: `https://i.ytimg.com/vi/${appearance.youtube_id}/maxresdefault.jpg`,
+      uploadDate: appearance.published ?? appearance.date,
+    },
+  }))
+);
+---
+
+<Base title="Talks" description="Conference talks by Nicolò Rebughini" schema={schema}>
+  <article class="post font-mono">
+    <PageTitle title="Talks" />
+
+    <Prose>
+      <p>
+        Conference talks I have given about Ruby, Rails and building AI-shaped things without
+        leaving the ecosystem. Recordings are linked where available.
+      </p>
+    </Prose>
+
+    {talks.map((talk) => (
+      <section id={talk.slug} class="mt-12 mb-16">
+        <h2 class="text-2xl leading-tight font-bold text-gray-800 mb-3">{talk.title}</h2>
+
+        <Prose>
+          <p>{talk.abstract}</p>
+        </Prose>
+
+        <h3 class="text-sm uppercase tracking-wider text-purple-600 font-bold mt-8 mb-4">
+          Given at
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {talk.appearances.map((appearance) => (
+            <TalkCard talk={talk} appearance={appearance} />
+          ))}
+        </div>
+      </section>
+    ))}
+  </article>
+</Base>

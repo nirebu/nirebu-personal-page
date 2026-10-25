@@ -14,9 +14,10 @@ This project is the personal website and blog of **Nicolò Rebughini** (nirebu.c
 *   **`src/content.config.ts`**: Defines the `blog` collection (title, description, date, tags, `published` flag; `published: false` = draft, filtered out at render).
 *   **`src/content/blog/`**: Blog posts in Markdown (filename = slug, no date prefix; date lives in frontmatter).
 *   **`src/data/site.ts`**: Site constants + video list (ported from Jekyll `_data/videos.yml`).
+*   **`src/data/talks.ts`**: Conference talks, each with a list of appearances (conference, date, location, YouTube recording).
 *   **`src/layouts/Base.astro`**: Main layout (head/SEO, navbar, footer, PostHog in production builds).
-*   **`src/components/`**: `Navbar.astro`, `Footer.astro`, `VideoList.astro`, `PostHog.astro`.
-*   **`src/pages/`**: File-based routing — `index.astro`, `about.astro`, `blog/index.astro`, `blog/[...slug].astro`, `videos/index.astro` + `videos/page/[page].astro` (10 per page, same `/videos/` + `/videos/page/N/` URLs as before), `projects/`, `tools/` (incl. client-side `out-of-black` tool), `rss.xml.js`, `404.astro`.
+*   **`src/components/`**: `Navbar.astro`, `Footer.astro`, `VideoList.astro`, `TalkCard.astro`, `PostHog.astro`.
+*   **`src/pages/`**: File-based routing — `index.astro`, `about.astro`, `blog/index.astro`, `blog/[...slug].astro`, `videos/index.astro` + `videos/page/[page].astro` (10 per page, same `/videos/` + `/videos/page/N/` URLs as before), `talks/`, `projects/`, `tools/` (incl. client-side `out-of-black` tool), `rss.xml.js`, `404.astro`.
 *   **`src/styles/global.css`**: Tailwind directives + ported custom styles (`.btn-primary`, `.markdown`, ...).
 *   **`public/`**: Static files served at root (`robots.txt`, `parking-simulator.html`, `assets/images/`).
 
@@ -63,6 +64,6 @@ pointing at `/sitemap.xml` and never redirect that URL.
 
 ## Development Conventions
 
-*   **Content:** Blog posts are Markdown files in `src/content/blog/`. New videos go in the `videos` array in `src/data/site.ts`.
+*   **Content:** Blog posts are Markdown files in `src/content/blog/`. New videos go in the `videos` array in `src/data/site.ts`. New talks go in the `talks` array in `src/data/talks.ts` — one entry per talk, with one appearance per conference (newest first); repeat talks reuse the entry and get another appearance.
 *   **Styling:** Use Tailwind utility classes in `.astro` components. Shared custom CSS lives in `src/styles/global.css`.
 *   **Routes:** Add a file under `src/pages/` — the path maps to the URL. Dynamic blog URLs come from the `blog` collection slug.

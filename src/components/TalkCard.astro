@@ -1,0 +1,73 @@
+---
+import type { Talk, TalkAppearance } from '../data/talks';
+
+interface Props {
+  talk: Talk;
+  appearance: TalkAppearance;
+}
+
+const { talk, appearance } = Astro.props as Props;
+
+const watchUrl = `https://www.youtube.com/watch?v=${appearance.youtube_id}`;
+const thumbnailUrl = `https://i.ytimg.com/vi/${appearance.youtube_id}/maxresdefault.jpg`;
+const date = new Date(appearance.date).toLocaleDateString('en-US', {
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric',
+  timeZone: 'UTC',
+});
+const label = `Watch "${talk.title}" at ${appearance.conference}`;
+---
+
+<div class="bg-gray-800 text-white border-2 border-gray-800 hover:border-purple-600 transition-all h-full flex flex-col">
+  <a href={watchUrl} target="_blank" rel="noopener" class="group relative block" aria-label={label}>
+    <img
+      src={thumbnailUrl}
+      alt={`Recording of ${talk.title} at ${appearance.conference}`}
+      width="1280"
+      height="720"
+      loading="lazy"
+      class="w-full aspect-video object-cover"
+    />
+    <span
+      class="absolute inset-0 flex items-center justify-center bg-gray-900/40 group-hover:bg-gray-900/20 transition-colors"
+    >
+      <span
+        class="flex items-center justify-center w-16 h-16 rounded-full bg-purple-600 text-white"
+      >
+        <svg viewBox="0 0 24 24" class="w-7 h-7 fill-current" aria-hidden="true">
+          <path d="M8 5v14l11-7z" />
+        </svg>
+      </span>
+    </span>
+  </a>
+
+  <div class="p-6 flex flex-col flex-1">
+    <div class="flex items-baseline justify-between gap-4 mb-1">
+      <span class="text-sm text-purple-400 font-bold">
+        {appearance.conferenceUrl ? (
+          <a
+            href={appearance.conferenceUrl}
+            target="_blank"
+            rel="noopener"
+            class="text-purple-400 hover:text-white transition-colors"
+          >
+            {appearance.conference}
+          </a>
+        ) : (
+          appearance.conference
+        )}
+      </span>
+      <span class="text-xs text-gray-400 whitespace-nowrap">{date}</span>
+    </div>
+    <p class="text-gray-400 text-sm mb-4">{appearance.location}</p>
+    <a
+      href={watchUrl}
+      target="_blank"
+      rel="noopener"
+      class="mt-auto text-xs uppercase tracking-wider font-bold text-white hover:text-purple-400 transition-colors"
+    >
+      Watch recording &nearr;
+    </a>
+  </div>
+</div>
