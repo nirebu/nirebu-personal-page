@@ -49,6 +49,14 @@ const schema = talks.flatMap((talk) =>
           <p>{talk.abstract}</p>
         </Prose>
 
+        {talk.slides && (
+          <p class="mt-6">
+            <a class="btn-secondary" href={talk.slides} target="_blank" rel="noopener">
+              View slides (PDF) &nearr;
+            </a>
+          </p>
+        )}
+
         <h3 class="text-sm uppercase tracking-wider text-purple-600 font-bold mt-8 mb-4">
           Given at
         </h3>

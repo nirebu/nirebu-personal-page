@@ -20,6 +20,8 @@ export interface Talk {
   slug: string;
   title: string;
   abstract: string;
+  /** Slide deck, usually a static file under /public/decks/. */
+  slides?: string;
   /** Newest first. */
   appearances: TalkAppearance[];
 }
@@ -31,6 +33,7 @@ export const talks: Talk[] = [
       'Accidentally building a neural network: A Ruby product recommendation journey',
     abstract:
       'Machine learning often feels like a black box reserved for Python data scientists. But what happens when you solve a complex product recommendation problem with Plain Old Ruby Objects — and discover you have unknowingly rebuilt the architecture of a neural network? This talk deconstructs a real-world recommendation engine that processes thousands of orders per week, and shows that you do not need heavy external services to solve AI problems. You need Ruby.',
+    slides: '/decks/accidentally_building_a_neural_network.pdf',
     appearances: [
       {
         conference: 'tiny ruby {conf} 2026',
