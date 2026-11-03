@@ -3,7 +3,17 @@ import Base from '../../layouts/Base.astro';
 import Prose from '../../components/Prose.astro';
 ---
 
-<Base title="I'm out of black" description="Convert PDFs and images to a dark ink color when the black cartridge runs dry. Runs in your browser.">
+<Base
+  title="I'm out of black"
+  description="Convert PDFs and images to a dark ink color when the black cartridge runs dry. Runs in your browser."
+  schema={{
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: "I'm out of black",
+    description: 'Convert PDFs and images to a dark ink color when the black cartridge runs dry. Runs in your browser.',
+    applicationCategory: 'UtilitiesApplication',
+  }}
+>
 
 
 <Prose class="mb-6">

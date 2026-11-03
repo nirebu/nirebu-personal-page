@@ -66,4 +66,5 @@ pointing at `/sitemap.xml` and never redirect that URL.
 
 *   **Content:** Blog posts are Markdown files in `src/content/blog/`. New videos go in the `videos` array in `src/data/site.ts`. New talks go in the `talks` array in `src/data/talks.ts` — one entry per talk, with one appearance per conference (newest first); repeat talks reuse the entry and get another appearance.
 *   **Styling:** Use Tailwind utility classes in `.astro` components. Shared custom CSS lives in `src/styles/global.css`.
+*   **Structured data:** Pass page-specific JSON-LD through `Base`'s `schema` prop. Stock Clipper uses `SoftwareApplication`; I'm out of black uses `WebApplication`. Only include details supported by the page; Google's software app rich results additionally require an offer price and a genuine rating or review.
 *   **Routes:** Add a file under `src/pages/` — the path maps to the URL. Dynamic blog URLs come from the `blog` collection slug.
