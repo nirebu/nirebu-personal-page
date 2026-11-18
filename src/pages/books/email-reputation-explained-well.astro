@@ -1,0 +1,120 @@
+---
+import Base from '../../layouts/Base.astro';
+
+const title = 'Email reputation explained well';
+const amazon = 'https://www.amazon.com/dp/B0CLMWMKQD';
+const cover = '/assets/images/email-reputation-explained-well.jpg';
+const url = new URL(Astro.url.pathname, Astro.site).href;
+const description = 'Learn why delivered email lands in spam. A 48-page guide to sender reputation, SPF, DKIM and DMARC by Nicolò Rebughini, with free setup and troubleshooting guides.';
+const topics = [
+  ['Before you send', 'Keep bad addresses off your list', 'Spot the difference between a new subscriber, a duplicate and a bot. Decide which addresses to stop mailing when deliveries fail.'],
+  ['At the mail server', 'Prove who sent the message', 'Untangle SPF, DKIM and DMARC: what each one checks, how they work together and what passing those checks does not prove.'],
+  ['In the mailbox', 'Read the signals readers send', 'Understand why someone marking your email as spam tells a mailbox provider something your delivery report cannot.'],
+  ['Across providers', 'Know what others see', 'Learn how providers share information about spam and where to look for warning signs about your own sending resources.'],
+];
+---
+
+<Base
+  title={`${title}: An email deliverability guide`}
+  description={description}
+  image={{ src: cover, width: 313, height: 500, alt: `Cover of ${title} by Nicolò Rebughini` }}
+  schema={{
+    '@context': 'https://schema.org', '@type': 'Book', '@id': `${url}#book`, url, name: title,
+    description: 'A 48-page field guide to list hygiene, sender authentication, engagement and monitoring email reputation.',
+    author: { '@type': 'Person', name: 'Nicolò Rebughini', url: new URL('/about/', Astro.site).href },
+    bookFormat: 'https://schema.org/EBook', inLanguage: 'en', numberOfPages: 48,
+    datePublished: '2023-10-24', image: new URL(cover, Astro.site).href, sameAs: amazon,
+  }}
+>
+  <article id="book" class="-mx-6 text-gray-800 sm:mx-0">
+    <header class="grid items-center gap-8 border-b-2 border-gray-800 pb-10 md:grid-cols-[3fr_2fr] md:gap-12">
+      <div>
+        <p class="mb-4 text-sm font-bold uppercase tracking-widest text-purple-700">An email deliverability field guide</p>
+        <h1 class="max-w-[14ch] text-4xl leading-none font-bold tracking-tight sm:text-5xl lg:text-6xl">Email reputation <span class="text-purple-700">explained well</span></h1>
+        <p class="mt-6 max-w-prose text-lg leading-relaxed">Your mail server says “delivered.” Your customer finds the message in spam. What happened in between?</p>
+        <p class="mt-4 leading-relaxed text-gray-700">Sender reputation is how a mailbox provider judges the mail coming from your domain or IP address. If you run a mailing list or build the product that sends the mail, this book explains which signals you can change, from the signup form to the inbox.</p>
+        <p class="mt-5 text-sm">By <a class="underline decoration-purple-600 underline-offset-4" href="#author">Nicolò Rebughini</a></p>
+        <div class="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">
+          <a class="btn-primary" href={amazon}>Get it on Amazon</a>
+          <a class="text-sm underline decoration-purple-600 underline-offset-4" href="#inside">Look inside <span aria-hidden="true">↓</span></a>
+        </div>
+      </div>
+      <figure class="jacket grid justify-items-center gap-5 border border-purple-200 px-5 py-7">
+        <img src={cover} alt="Cover of Email reputation explained well" width="313" height="500" fetchpriority="high" class="w-40 -rotate-2 shadow-[6px_8px_0_#c4b5d8] md:w-52" />
+        <figcaption class="mt-1 bg-[#faf8f3] px-2 text-center text-xs font-bold uppercase tracking-wider">Kindle edition · 48 pages · English</figcaption>
+      </figure>
+    </header>
+
+    <section class="border-b border-gray-300 py-8">
+      <h2 id="bulk-sender-requirements" class="text-2xl font-bold tracking-tight">What changed for bulk email senders in 2024?</h2>
+      <div class="prose mt-3 mb-0 max-w-prose">
+        <p>Gmail and Yahoo began enforcing stricter rules for bulk senders in 2024. If you send newsletters at scale, both providers require you to authenticate your domain with SPF, DKIM and DMARC, support one-click unsubscribe, and keep your spam complaint rate below 0.3%.</p>
+        <p>I wrote this book in 2023 to explain the fundamentals behind those rules. Use it to understand why a reader’s spam report matters even when your mail passes authentication. For the current checklist, go straight to the <a href="https://support.google.com/mail/answer/81126?hl=en">Gmail sender guidelines</a> and <a href="https://senders.yahooinc.com/best-practices">Yahoo sender requirements</a>.</p>
+      </div>
+    </section>
+
+    <section id="inside" class="scroll-mt-6 py-10">
+      <p class="text-sm font-bold uppercase tracking-widest text-purple-700">Inside the book</p>
+      <h2 class="mt-2 text-3xl font-bold tracking-tight">Follow one email from signup to inbox.</h2>
+      <ol class="mt-6 grid gap-x-10 gap-y-6 sm:grid-cols-2">
+        {topics.map(([stage, heading, detail], index) => (
+          <li class="border-t border-gray-300 pt-4">
+            <p class="text-xs font-bold uppercase tracking-widest text-purple-700">0{index + 1} / {stage}</p>
+            <h3 class="my-2 text-xl font-bold leading-tight">{heading}</h3>
+            <p class="leading-relaxed text-gray-700">{detail}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <aside class="border-l-4 border-purple-600 bg-purple-50 p-5 sm:p-8" aria-labelledby="field-note">
+      <p class="text-sm font-bold uppercase tracking-widest text-purple-700">Field note / a worked example</p>
+      <h2 id="field-note" class="mt-2 text-2xl font-bold">“But our messages pass DMARC.”</h2>
+      <div class="mt-4 max-w-prose space-y-3 leading-relaxed">
+        <p>Imagine a shop that starts sending weekly offers to everyone who ever asked for a receipt. The messages are signed correctly. Customers still hit “report spam.”</p>
+        <p>DMARC helps answer <strong>“Did this come from the shop?”</strong> It can’t answer <strong>“Did I ask for offers?”</strong> Before changing a DNS record, check what the customer actually agreed to at checkout.</p>
+      </div>
+    </aside>
+
+    <section aria-labelledby="free-guides" class="mt-10">
+      <p class="text-sm font-bold uppercase tracking-widest text-purple-700">Free companion guides</p>
+      <h2 id="free-guides" class="mt-2 text-2xl font-bold">What are you trying to fix?</h2>
+      <dl class="prose mt-4 grid gap-5 sm:grid-cols-2">
+        <div>
+          <dt><a href="/blog/spf-dkim-dmarc-setup/">How to set up SPF, DKIM and DMARC</a></dt>
+          <dd class="mt-2">Start here if you’re connecting a sending service to your domain. Check the DNS records and verify the result on a message you actually received.</dd>
+        </div>
+        <div class="mt-0">
+          <dt><a href="/blog/email-delivery-sender-reputation/">Troubleshoot email delivery and sender reputation</a></dt>
+          <dd class="mt-2">Start here if mail is bouncing, arriving late or landing in spam. The first clue is whether the receiving server accepted the message.</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section id="author" class="my-10 grid scroll-mt-6 gap-4 sm:grid-cols-[1fr_2fr]">
+      <div>
+        <p class="text-sm font-bold uppercase tracking-widest text-purple-700">From the author</p>
+        <h2 class="mt-2 text-2xl font-bold">Why I wrote it</h2>
+      </div>
+      <div class="space-y-3 leading-relaxed text-gray-700">
+        <p>I’m Nicolò Rebughini. At an Italian email service provider, I managed more than 4,500 Postfix mail servers. Keeping the servers running was one job. Understanding why providers trusted some of the mail we sent and not the rest was another.</p>
+        <p>I wrote the guide I wanted when I started: enough detail to understand the signals, without having to become a full-time mail administrator.</p>
+        <a href="/about/" class="inline-block text-sm underline decoration-purple-600 underline-offset-4">More about my background</a>
+      </div>
+    </section>
+
+    <footer class="border-t-2 border-gray-800 pt-8">
+      <h2 class="text-2xl font-bold">Start with the next email you send.</h2>
+      <p class="my-4 max-w-prose leading-relaxed text-gray-700">Read a sample or pick up the ebook on Amazon. You can read it in the free Kindle app; no Kindle device needed.</p>
+      <a href={amazon} class="btn-primary">Get the Kindle edition</a>
+    </footer>
+  </article>
+</Base>
+
+<style>
+  .jacket {
+    background-color: #f3eef8;
+    background-image: radial-gradient(#cfc1dc 1px, transparent 1px);
+    background-size: 8px 8px;
+  }
+</style>

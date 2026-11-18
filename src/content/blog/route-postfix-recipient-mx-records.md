@@ -70,3 +70,5 @@ triggers FILTER myesp_transport:
 ```
 
 meaning that relevant messages are now routed in different transports based on the recipient MX records.
+
+Routing gets a message to the right mail server; it doesn't tell you where the message lands. If you see successful deliveries in the Postfix log but recipients still find your mail in spam, start with [how to diagnose email delivery and sender reputation](/blog/email-delivery-sender-reputation/).
